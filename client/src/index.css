@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@font-face {
+    font-family: "Rubik";
+    src: url("assets/Rubik.ttf") format("truetype");
+    font-display: swap;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+* {
+    font-family: "Rubik", sans-serif;
+    font-display: swap;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
