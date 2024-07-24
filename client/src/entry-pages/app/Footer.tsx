@@ -23,7 +23,7 @@ const Footer = () => {
 			>
 				<Copyright />
 				<span className='text-sm drop-shadow'>
-					SWE Playground - Planon - {year}
+					Agile Estimate - {year}
 				</span>
 			</motion.div>
 		</footer>

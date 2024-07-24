@@ -1,13 +1,14 @@
 'use strict'
 
 import fastifyMongodb from "@fastify/mongodb";
+import process from "process";
 
-const db_name = "planning_poker";
+const db_name = "agile_estimate";
 const collection_name = "rooms";
 
 export default async function (fastify, opts) {
 	fastify.register(fastifyMongodb, {
-		url: "mongodb://localhost:27017/" + db_name,
+		url: "mongodb://" + process.env.DB_URL+ ":" + process.env.DB_PORT + "/" + db_name,
 	});
 
 	// Create Room Collection with TTL index

@@ -162,7 +162,7 @@ const Home = () => {
 											animate={{ opacity: 1, y: 0 }}
 											transition={{ duration: 0.5 }}
 											src={sections[currentSection].image}
-											alt='Planning Poker'
+											alt='Agile Estimate'
 											className='w-full h-full object-cover object-center rounded-lg shadow-lg'
 										/>
 									</div>

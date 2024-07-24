@@ -4,7 +4,7 @@ import fastifyMongodb from "@fastify/mongodb";
 import websocket from "@fastify/websocket";
 import process from "process";
 
-const db_name = "planning_poker";
+const db_name = "agile_estimate";
 const collection_name = "rooms";
 
 const clientsPerRoom = new Map();
