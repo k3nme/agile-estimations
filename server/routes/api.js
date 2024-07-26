@@ -10,7 +10,7 @@ const collection_name = "rooms";
 const mode = "prod";
 
 const dev_url = "mongodb://localhost:3000/" + db_name;
-const prod_url = "mongodb+srv://" + process.env.DB_URL + "/" + db_name;
+const prod_url = process.env.MONGODB_URI + "/" + db_name;
 
 const clientsPerRoom = new Map();
 

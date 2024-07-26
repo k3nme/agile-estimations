@@ -9,7 +9,7 @@ const collection_name = "rooms";
 const mode = "prod";
 
 const dev_url = "mongodb://localhost:3000/" + db_name;
-const prod_url = "mongodb+srv://" + process.env.DB_URL + "/" + db_name;
+const prod_url = process.env.MONGODB_URI + "/" + db_name;
 
 export default async function (fastify, opts) {
 	fastify.register(fastifyMongodb, {
