@@ -36,7 +36,7 @@ const Logo = () => {
 				animate={{ y: 0 }}
 				transition={{ type: "spring", stiffness: 300 }}
 			>
-				Agile Estimate
+				Agile Estimations
 			</motion.p>
 		</div>
 	);

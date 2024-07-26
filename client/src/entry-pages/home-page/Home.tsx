@@ -9,7 +9,7 @@ import usePageVisibility from "../../utilities/usePageVisibility";
 
 const sections = [
 	{
-		heading: "Welcome to Agile Estimate",
+		heading: "Welcome to Agile Estimations",
 		description: "No signup required, No limit on users, No licenses.",
 		subDescription:
 			"Effortlessly manage your scrum planning sessions with your team.",
@@ -162,7 +162,7 @@ const Home = () => {
 											animate={{ opacity: 1, y: 0 }}
 											transition={{ duration: 0.5 }}
 											src={sections[currentSection].image}
-											alt='Agile Estimate'
+											alt='Agile Estimations'
 											className='w-full h-full object-cover object-center rounded-lg shadow-lg'
 										/>
 									</div>

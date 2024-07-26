@@ -3,7 +3,7 @@
 import fastifyMongodb from "@fastify/mongodb";
 import process from "process";
 
-const db_name = "agile_estimate";
+const db_name = "agile_estimations";
 const collection_name = "rooms";
 
 export default async function (fastify, opts) {
