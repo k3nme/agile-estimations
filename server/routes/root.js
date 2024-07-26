@@ -6,11 +6,19 @@ import process from "process";
 const db_name = "agile_estimations";
 const collection_name = "rooms";
 
+const mode = "prod";
+
+const dev_url = "mongodb://localhost:3000/" + db_name;
+const prod_url = "mongodb+srv://" + process.env.DB_URL + "/" + db_name;
+
 export default async function (fastify, opts) {
 	fastify.register(fastifyMongodb, {
-		url: "mongodb://" + process.env.DB_URL+ ":" + process.env.DB_PORT + "/" + db_name,
+		url: mode === "dev" ? dev_url : prod_url
 	});
 
+	fastify.get('/', async (request, reply) => {
+		return { hello: 'world' }
+	});
 	// Create Room Collection with TTL index
 	fastify.addHook("onReady", async () => {
 		const db = fastify.mongo.db;
