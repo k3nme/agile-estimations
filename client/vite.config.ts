@@ -21,7 +21,6 @@ export default defineConfig({
 		proxy: {
 			"/api": {
 				target: "https://agile-estimate-fastify.vercel.app",
-				changeOrigin: true,
 				rewrite: (path) => path.replace(/^\/api/, ""),
 			},
 		},
