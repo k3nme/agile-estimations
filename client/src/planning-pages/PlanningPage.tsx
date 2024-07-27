@@ -60,7 +60,7 @@ const App = () => {
 			const address = 'https://agile-estimate-fastify.vercel.app';
 
 			const socket = new WebSocket(
-				`ws://${address}/connect-to-room/` + roomID
+				`wss://${address}/connect-to-room/` + roomID
 			);
 
 			socket.onopen = () => {
