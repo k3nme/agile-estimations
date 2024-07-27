@@ -56,11 +56,11 @@ const EstimationComponent = ({
 
 	const confirmUserEstimate = async () => {
 		try {
-			const response = await fetch("/api/user-estimate-issue", {
+			const response = await fetch("https://agile-estimate-fastify.vercel.app/user-estimate-issue", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
-					"Access-Control-Allow-Origin": "/api/*",
+					"Access-Control-Allow-Origin": "https://agile-estimate-fastify.vercel.app/*",
 				},
 				body: JSON.stringify({
 					roomID: roomID,

@@ -57,11 +57,11 @@ const UserEntry = ({ open = true, roomID, handleClose }: Props) => {
 					isSpectator,
 				};
 
-				const response = await fetch("/api/add-user-to-room", {
+				const response = await fetch("https://agile-estimate-fastify.vercel.app/add-user-to-room", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						"Access-Control-Allow-Origin": "/api/*",
+						"Access-Control-Allow-Origin": "https://agile-estimate-fastify.vercel.app/*",
 					},
 					body: JSON.stringify({
 						id: roomID,

@@ -16,13 +16,5 @@ export default defineConfig({
 		alias: {
 			"@": path.resolve(__dirname, "./"),
 		},
-	},
-	server: {
-		proxy: {
-			"/api": {
-				target: "https://agile-estimate-fastify.vercel.app",
-				rewrite: (path) => path.replace(/^\/api/, ""),
-			},
-		},
-	},
+	}
 });

@@ -12,11 +12,11 @@ const RoomHistory = () => {
 	const getHistory = async () => {
 		if (roomID) {
 			try {
-				const response = await fetch("/api/get-room-data/" + roomID, {
+				const response = await fetch("https://agile-estimate-fastify.vercel.app/get-room-data/" + roomID, {
 					method: "GET",
 					headers: {
 						"Content-Type": "application/json",
-						"Access-Control-Allow-Origin": "/api/*",
+						"Access-Control-Allow-Origin": "https://agile-estimate-fastify.vercel.app/*",
 					},
 				});
 				if (response.ok) {
