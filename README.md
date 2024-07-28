@@ -16,6 +16,7 @@
 ### Contribution guidelines ###
 
 * Writing tests wherever possible.
+* _*Always*_ work on a feature branch. Never commit directly on main.
 * Code review from the repo owner.
 
 ### Who do I talk to? ###
