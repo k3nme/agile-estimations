@@ -57,10 +57,10 @@ const App = () => {
 			!roomSocket.current ||
 			roomSocket.current.readyState !== WebSocket.OPEN
 		) {
-			const address = 'agile-estimate-fastify.vercel.app';
+			const address = '';
 
 			const socket = new WebSocket(
-				`wss://${address}/connect-to-room/` + roomID
+				`wss://agile-estimate-fastify.vercel.app/connect-to-room/` + roomID
 			);
 
 			socket.onopen = () => {
