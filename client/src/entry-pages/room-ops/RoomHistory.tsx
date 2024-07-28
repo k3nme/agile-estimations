@@ -79,6 +79,9 @@ const RoomHistory = () => {
 						<li className='mb-2'>
 							Step 3: A CSV file will be downloaded with the issues in the room
 						</li>
+						<li className='mb-2'>
+							Note : The history will be available only for sessions completed less than 3 days ago. 
+						</li>
 					</ul>
 				</div>
 				{/* Right Content (Form) */}
