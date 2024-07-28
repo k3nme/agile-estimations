@@ -13,19 +13,19 @@ const sections = [
 		description: "No signup required, No limit on users, No licenses.",
 		subDescription:
 			"Effortlessly manage your scrum planning sessions with your team.",
-		image: "",
+		image: img1,
 	},
 	{
 		heading: "Streamline Your Planning Process",
 		description: "Collaborate with your team in real-time.",
 		subDescription: "Easy to use interface and powerful features.",
-		image: "",
+		image: img2,
 	},
 	{
 		heading: "Boost Team Productivity",
 		description: "Engage your team with interactive planning sessions.",
 		subDescription: "Make planning efficient and fun.",
-		image: "",
+		image: img3,
 	},
 ];
 
