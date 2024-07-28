@@ -40,11 +40,11 @@ const AddIssuesFromJira = ({ open = true, roomID, handleClose }: Props) => {
 	const fetchIssuesFromJira = async () => {
 		if (issues && !issuesError) {
 			try {
-				const response = await fetch("https://agile-estimate-fastify.vercel.app/fetch-issues-from-jira", {
+				const response = await fetch("https://planning-poker-gjur.onrender.com/fetch-issues-from-jira", {
 					method: "GET",
 					headers: {
 						"Content-Type": "application/json",
-						"Access-Control-Allow-Origin": "https://agile-estimate-fastify.vercel.app/*",
+						"Access-Control-Allow-Origin": "https://planning-poker-gjur.onrender.com/*",
 					},
 					body: JSON.stringify({
 						issues,

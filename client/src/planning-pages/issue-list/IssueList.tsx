@@ -28,11 +28,11 @@ const IssueList = ({
 
 	const deleteIssueFromRoom = async (issue: Issue) => {
 		try {
-			const response = await fetch("https://agile-estimate-fastify.vercel.app/remove-issue-from-room", {
+			const response = await fetch("https://planning-poker-gjur.onrender.com/remove-issue-from-room", {
 				method: "DELETE",
 				headers: {
 					"Content-Type": "application/json",
-					"Access-Control-Allow-Origin": "https://agile-estimate-fastify.vercel.app/*",
+					"Access-Control-Allow-Origin": "https://planning-poker-gjur.onrender.com/*",
 				},
 				body: JSON.stringify({
 					roomID,

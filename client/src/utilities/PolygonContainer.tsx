@@ -99,11 +99,11 @@ const UserPolygon = ({
 	// Method to request revealing of votes
 	const askForReveal = async () => {
 		try {
-			const response = await fetch("https://agile-estimate-fastify.vercel.app/update-final-estimation", {
+			const response = await fetch("https://planning-poker-gjur.onrender.com/update-final-estimation", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
-					"Access-Control-Allow-Origin": "https://agile-estimate-fastify.vercel.app/*",
+					"Access-Control-Allow-Origin": "https://planning-poker-gjur.onrender.com/*",
 				},
 				body: JSON.stringify({
 					roomID: roomID,

@@ -72,11 +72,11 @@ const CreateRoom = () => {
 			try {
 				const roomID = generateID();
 
-				const response = await fetch("https://agile-estimate-fastify.vercel.app/create-room", {
+				const response = await fetch("https://planning-poker-gjur.onrender.com/create-room", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						"Access-Control-Allow-Origin": "https://agile-estimate-fastify.vercel.app/*",
+						"Access-Control-Allow-Origin": "https://planning-poker-gjur.onrender.com/*",
 					},
 					body: JSON.stringify({
 						id: roomID,

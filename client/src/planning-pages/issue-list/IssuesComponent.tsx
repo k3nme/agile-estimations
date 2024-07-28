@@ -76,11 +76,11 @@ const IssuesComponent = (props: {
 					estimations: {},
 				};
 
-				const response = await fetch("https://agile-estimate-fastify.vercel.app/add-issue-to-room", {
+				const response = await fetch("https://planning-poker-gjur.onrender.com/add-issue-to-room", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						"Access-Control-Allow-Origin": "https://agile-estimate-fastify.vercel.app/*",
+						"Access-Control-Allow-Origin": "https://planning-poker-gjur.onrender.com/*",
 					},
 					body: JSON.stringify({
 						roomID,

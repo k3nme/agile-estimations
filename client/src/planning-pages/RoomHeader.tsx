@@ -91,11 +91,11 @@ const RoomHeader = ({
 
 	const deleteUserFromRoom = async () => {
 		try {
-			const response = await fetch("https://agile-estimate-fastify.vercel.app/remove-user-from-room", {
+			const response = await fetch("https://planning-poker-gjur.onrender.com/remove-user-from-room", {
 				method: "DELETE",
 				headers: {
 					"Content-Type": "application/json",
-					"Access-Control-Allow-Origin": "https://agile-estimate-fastify.vercel.app/*",
+					"Access-Control-Allow-Origin": "https://planning-poker-gjur.onrender.com/*",
 				},
 				body: JSON.stringify({
 					roomID,

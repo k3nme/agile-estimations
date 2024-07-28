@@ -12,11 +12,11 @@ const JoinRoom = () => {
 	const joinRoom = async () => {
 		if (roomID) {
 			try {
-				const response = await fetch("https://agile-estimate-fastify.vercel.app/get-room-data/" + roomID, {
+				const response = await fetch("https://planning-poker-gjur.onrender.com/get-room-data/" + roomID, {
 					method: "GET",
 					headers: {
 						"Content-Type": "application/json",
-						"Access-Control-Allow-Origin": "https://agile-estimate-fastify.vercel.app/*",
+						"Access-Control-Allow-Origin": "https://planning-poker-gjur.onrender.com/*",
 					},
 				});
 				if (response.ok) {
