@@ -3,7 +3,7 @@
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import AutoLoad from "@fastify/autoload";
-import cors from "@fastify/cors";
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -12,11 +12,6 @@ const __dirname = dirname(__filename);
 const options = {};
 
 export default async function (fastify, opts) {
-	fastify.register(cors, {
-		origin: "http://localhost:5173", // Allow requests from any origin
-		methods: ["GET", "POST", "PUT", "DELETE"], // Allow specified methods
-	});
-
 	// Do not touch the following lines
 
 	// This loads all plugins defined in plugins
