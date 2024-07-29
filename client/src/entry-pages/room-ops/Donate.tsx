@@ -17,8 +17,8 @@ const Donate = () => {
 				<div className='lg:mr-12 max-w-xs mb-6 lg:mb-0 drop-shadow'>
 					<h2 className='text-2xl font-bold mb-4'>Note</h2>
 					<ul className='list-disc list-inside'>
-						<li className='mb-2'>Step 1: If you like the application, please consider donating an amount, to show your support.</li>
-						<li className='mb-2'>Step 2: The donated amount will be used for hosting costs, and maintenance.</li>
+						<li className='mb-2'>If you like the application, please consider donating an amount, to show your support.</li>
+						<li className='mb-2'>The donated amount will be used for hosting costs, and maintenance.</li>
 					</ul>
 				</div>
 				{/* Right Content (Form) */}
@@ -40,13 +40,11 @@ const Donate = () => {
 						onChange={(e) => setAmount(e.target.value)}
 					/>
 					
-					<motion.div className = 'grid grid-cols-4 w-full text-base font-medium justify-between m-2 gap-2 text-center'>
+					<motion.div className = 'grid grid-cols-4 w-full text-base font-medium justify-between gap-2 text-center'>
 						<motion.button className='bg-indigo-500 p-2 rounded text-white' onClick={() => {setAmount(100);}}>100</motion.button>
                                                 <motion.button className='bg-indigo-500 p-2 rounded text-white' onClick={() => {setAmount(200);}}>200</motion.button>
                                                 <motion.button className='bg-indigo-500 p-2 rounded text-white' onClick={() => {setAmount(500);}}>500</motion.button>
 						<motion.button className='bg-indigo-500 p-2 rounded text-white' onClick={() => {setAmount(1000);}}>1000</motion.button>
-                                                <motion.button className='bg-indigo-500 p-2 rounded text-white' onClick={() => {setAmount(2000);}}>2000</motion.button>
-                                                <motion.button className='bg-indigo-500 p-2 rounded text-white' onClick={() => {setAmount(5000);}}>5000</motion.button>
 					</motion.div>
 					
 					<motion.button
