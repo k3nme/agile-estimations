@@ -6,6 +6,9 @@ import { Download } from "@mui/icons-material";
 import Issue from "../../../../models/Issue";
 
 const Donate = () => {
+		
+		const [amount, setAmount] = useState(0);
+
 		return (
 		<div className='flex flex-col min-h-screen bg-gray-100'>
 			<Header />
@@ -30,15 +33,17 @@ const Donate = () => {
 					<TextField
 						label='Amount'
 						fullWidth
+						value={amount}
 						required
+						type='number'
 						variant='outlined'
-						onChange={(e) => setRoomID(e.target.value)}
+						onChange={(e) => setAmount(e.target.value)}
 					/>
 					
-					<motion.div className = 'flex flex-row w-full text-base font-medium m-2 gap-4 text-center'>
-						<motion.button className='bg-slate-500 rounded'>20</motion.button>
-						<motion.button className='bg-slate-500 rounded'>50</motion.button>
-						<motion.button className='bg-slate-500 rounded'>100</motion.button>
+					<motion.div className = 'flex flex-row w-full text-base font-medium justify-between m-2 gap-4 text-center'>
+						<motion.button className='bg-indigo-500 p-2 rounded'>20</motion.button>
+						<motion.button className='bg-indigo-500 p-2 rounded'>50</motion.button>
+						<motion.button className='bg-indigo-500 p-2 rounded'>100</motion.button>
 					</motion.div>
 					
 					<motion.button
