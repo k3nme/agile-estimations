@@ -8,9 +8,10 @@ import Issue from "../../../../models/Issue";
 const RoomHistory = () => {
 	const [roomID, setRoomID] = useState("");
 	const [roomIDError, setRoomIDError] = useState("");
-
+	const [isExportInProgress, setIsExportInProgress] = useState(false);
 	const getHistory = async () => {
 		if (roomID) {
+			setIsExportInProgress(true);
 			try {
 				const response = await fetch("https://planning-poker-gjur.onrender.com/get-room-data/" + roomID, {
 					method: "GET",
@@ -59,6 +60,7 @@ const RoomHistory = () => {
 			} catch (error) {
 				console.log("Request failed with error:", error);
 			}
+			setIsExportInProgress(false);
 		}
 	};
 
@@ -98,6 +100,7 @@ const RoomHistory = () => {
 						label='Room ID'
 						fullWidth
 						required
+						disabled={isExportInProgress}
 						variant='outlined'
 						value={roomID}
 						onChange={(e) => setRoomID(e.target.value)}
@@ -114,9 +117,12 @@ const RoomHistory = () => {
 							validateHistory();
 							getHistory();
 						}}
+						style={{
+							opacity: isExportInProgress ? "0.7" : "1",
+						}}
 					>
 						<Download className='mr-2' />
-						<p>Export</p>
+						<p>{isExportInProgress? "Exporting.." : "Export"}</p>
 					</motion.button>
 				</motion.div>
 			</div>
