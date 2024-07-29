@@ -68,7 +68,7 @@ const CreateRoom = () => {
 	const createRoom = async () => {
 		if (roomName && selectedEstimationType) {
 			updateSessionStorage("userEntryType", "create");
-
+			setIsCreateInProgress(true);
 			try {
 				const roomID = generateID();
 
@@ -102,6 +102,7 @@ const CreateRoom = () => {
 			} catch (error) {
 				console.log("Request failed with error:", error);
 			}
+			setIsCreateInProgress(false);
 		}
 	};
 
