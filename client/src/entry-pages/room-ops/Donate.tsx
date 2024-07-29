@@ -40,7 +40,7 @@ const Donate = () => {
 						onChange={(e) => setAmount(e.target.value)}
 					/>
 					
-					<motion.div className = 'grid grid-cols-4 w-full text-base font-medium justify-between gap-2 text-center'>
+					<motion.div className = 'grid grid-cols-4 w-full my-2 text-base font-medium justify-between gap-2 text-center'>
 						<motion.button className='bg-indigo-500 p-2 rounded text-white' onClick={() => {setAmount(100);}}>100</motion.button>
                                                 <motion.button className='bg-indigo-500 p-2 rounded text-white' onClick={() => {setAmount(200);}}>200</motion.button>
                                                 <motion.button className='bg-indigo-500 p-2 rounded text-white' onClick={() => {setAmount(500);}}>500</motion.button>
