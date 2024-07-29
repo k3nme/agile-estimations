@@ -68,6 +68,7 @@ function App() {
 							<Route path='/create-room' element={<CreateRoom />} />
 							<Route path='/join-room' element={<JoinRoom />} />
 							<Route path='/history' element={<RoomHistory />} />
+							<Route path='/donate' element={<Donate />} />
 							<Route path='/:roomID' element={<PlanningPage />} />
 						</Routes>
 					</Router>
