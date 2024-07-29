@@ -31,7 +31,7 @@ const Logo = () => {
 				</AnimatePresence>
 			</div>
 			<motion.p
-				className='text-sm font-semibold drop-shadow-md text-center'
+				className='text-xs font-semibold drop-shadow-md text-center'
 				initial={{ y: -20 }}
 				animate={{ y: 0 }}
 				transition={{ type: "spring", stiffness: 300 }}
