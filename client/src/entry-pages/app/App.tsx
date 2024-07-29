@@ -14,6 +14,7 @@ import PlanningPage from "../../planning-pages/PlanningPage";
 import { light, dark } from "../../utilities/Themes";
 import JoinRoom from "../room-ops/JoinRoom";
 import RoomHistory from "../room-ops/RoomHistory";
+import Donate from "../room-ops/Donate";
 import CreateRoom from "../room-ops/CreateRoom";
 
 export const ColorModeContext = createContext({
