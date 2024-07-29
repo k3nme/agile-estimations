@@ -35,7 +35,7 @@ const Donate = () => {
 						onChange={(e) => setRoomID(e.target.value)}
 					/>
 					
-					<motion.div className = 'flex flex-col text-base font-medium m-2 text-center'>
+					<motion.div className = 'flex flex-row text-base font-medium m-2 text-center'>
 						<motion.button>20</motion.button>
 						<motion.button>50</motion.button>
 						<motion.button>100</motion.button>
