@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Download } from "@mui/icons-material";
 import Issue from "../../../../models/Issue";
 
-const RoomHistory = () => {
+const Donate = () => {
 		<div className='flex flex-col min-h-screen bg-gray-100'>
 			<Header />
 			<div className='flex flex-grow flex-col lg:flex-row items-center justify-center p-4'>
@@ -24,7 +24,7 @@ const RoomHistory = () => {
 					transition={{ duration: 0.5 }}
 					className='bg-white rounded-lg shadow-lg p-6 w-full max-w-md'
 				>
-					<h1 className='text-3xl font-bold mb-6 text-center'>History</h1>
+					<h1 className='text-3xl font-bold mb-6 text-center'>Donate</h1>
 
 					<TextField
 						error={!!roomIDError}
@@ -61,4 +61,4 @@ const RoomHistory = () => {
 	);
 };
 
-export default RoomHistory;
+export default Donate;
