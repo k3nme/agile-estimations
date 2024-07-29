@@ -27,14 +27,11 @@ const Donate = () => {
 					<h1 className='text-3xl font-bold mb-6 text-center'>Donate</h1>
 
 					<TextField
-						error={!!roomIDError}
 						label='Amount'
 						fullWidth
 						required
 						variant='outlined'
-						value={roomID}
 						onChange={(e) => setRoomID(e.target.value)}
-						helperText={roomIDError}
 					/>
 					
 					<motion.div className = 'flex flex-col text-base font-medium m-2 text-center'>
