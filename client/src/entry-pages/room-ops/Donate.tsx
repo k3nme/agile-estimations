@@ -58,7 +58,6 @@ const Donate = () => {
 				</motion.div>
 			</div>
 		</div>
-	);
 };
 
 export default Donate;
