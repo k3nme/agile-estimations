@@ -26,7 +26,7 @@ const CreateRoom = () => {
 	>([]);
 	const [customValues, setCustomValues] = useState("");
 	const [selectError, setSelectError] = useState("");
-
+	const [isCreateInProgress, setIsCreateInProgress] = useState(false);
 	const [roomNameError, setRoomNameError] = useState("");
 	const [customValuesError, setCustomValuesError] = useState("");
 
@@ -157,6 +157,7 @@ const CreateRoom = () => {
 						required
 						fullWidth
 						margin='dense'
+						disabled={isCreateInProgress}
 						onChange={(e) => setRoomName(e.target.value)}
 						value={roomName}
 						helperText={roomNameError}
@@ -167,6 +168,7 @@ const CreateRoom = () => {
 					<FormControl
 						error={!!selectError}
 						fullWidth
+						disabled={isCreateInProgress}
 						margin='dense'
 						className='mt-6'
 					>
@@ -181,6 +183,7 @@ const CreateRoom = () => {
 							label='Select Estimation Type'
 							margin='dense'
 							required
+							disabled={isCreateInProgress}
 							fullWidth
 							variant='outlined'
 						>
@@ -204,6 +207,7 @@ const CreateRoom = () => {
 							required
 							onChange={handleEstimationValuesChange}
 							margin='dense'
+							disabled={isCreateInProgress}
 							helperText={customValuesError}
 							fullWidth
 							variant='outlined'
@@ -222,8 +226,11 @@ const CreateRoom = () => {
 								createRoom();
 							}
 						}}
+						style={{
+							opacity: isCreateInProgress ? "0.7" : "1",
+						}}
 					>
-						Create Room
+						{isCreateInProgress? "Creating.." : "Create Room"}
 					</motion.button>
 				</motion.div>
 			</div>
