@@ -8,9 +8,10 @@ const JoinRoom = () => {
 	const navigate = useNavigate();
 	const [roomID, setRoomID] = useState("");
 	const [roomIDError, setRoomIDError] = useState("");
-
+	const [isJoinInProgress, setIsJoinInProgress] = useState(false);
 	const joinRoom = async () => {
 		if (roomID) {
+			setIsJoinInProgress(true);
 			try {
 				const response = await fetch("https://planning-poker-gjur.onrender.com/get-room-data/" + roomID, {
 					method: "GET",
@@ -35,6 +36,7 @@ const JoinRoom = () => {
 			} catch (error) {
 				console.log("Request failed with error:", error);
 			}
+			setIsJoinInProgress(false);
 		}
 	};
 
@@ -73,6 +75,7 @@ const JoinRoom = () => {
 						fullWidth
 						required
 						variant='outlined'
+						disabled={isJoinInProgress}
 						value={roomID}
 						onChange={(e) => setRoomID(e.target.value)}
 						helperText={roomIDError}
@@ -88,8 +91,11 @@ const JoinRoom = () => {
 							validateJoinRoom();
 							joinRoom();
 						}}
+						style={{
+							opacity: isJoinInProgress ? "0.7" : "1",
+						}}
 					>
-						Join Room
+						{isJoinInProgress ? "Joining.." : "Join room"}
 					</motion.button>
 				</motion.div>
 			</div>
