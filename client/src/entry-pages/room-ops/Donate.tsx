@@ -6,6 +6,7 @@ import { Download } from "@mui/icons-material";
 import Issue from "../../../../models/Issue";
 
 const Donate = () => {
+		return (
 		<div className='flex flex-col min-h-screen bg-gray-100'>
 			<Header />
 			<div className='flex flex-grow flex-col lg:flex-row items-center justify-center p-4'>
@@ -55,6 +56,7 @@ const Donate = () => {
 				</motion.div>
 			</div>
 		</div>
+);
 };
 
 export default Donate;
