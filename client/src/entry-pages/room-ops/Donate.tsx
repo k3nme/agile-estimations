@@ -40,16 +40,13 @@ const Donate = () => {
 						onChange={(e) => setAmount(e.target.value)}
 					/>
 					
-					<motion.div className = 'grid grid-rows-4 w-full text-base font-medium justify-between m-2 gap-2 text-center'>
-						<motion.button className='bg-indigo-500 p-2 rounded'>10</motion.button>
-						<motion.button className='bg-indigo-500 p-2 rounded'>20</motion.button>
-						<motion.button className='bg-indigo-500 p-2 rounded'>50</motion.button>
-						<motion.button className='bg-indigo-500 p-2 rounded'>100</motion.button>
-                                                <motion.button className='bg-indigo-500 p-2 rounded'>200</motion.button>
-                                                <motion.button className='bg-indigo-500 p-2 rounded'>500</motion.button>
-						<motion.button className='bg-indigo-500 p-2 rounded'>1000</motion.button>
-                                                <motion.button className='bg-indigo-500 p-2 rounded'>2000</motion.button>
-                                                <motion.button className='bg-indigo-500 p-2 rounded'>5000</motion.button>
+					<motion.div className = 'grid grid-cols-4 w-full text-base font-medium justify-between m-2 gap-2 text-center'>
+						<motion.button className='bg-indigo-500 p-2 rounded text-white' onClick={() => {setAmount(100)}}>100</motion.button>
+                                                <motion.button className='bg-indigo-500 p-2 rounded text-white' onClick={() => {setAmount(200)}}>>200</motion.button>
+                                                <motion.button className='bg-indigo-500 p-2 rounded text-white' onClick={() => {setAmount(500)}}>>500</motion.button>
+						<motion.button className='bg-indigo-500 p-2 rounded text-white' onClick={() => {setAmount(1000)}}>>1000</motion.button>
+                                                <motion.button className='bg-indigo-500 p-2 rounded text-white' onClick={() => {setAmount(2000)}}>>2000</motion.button>
+                                                <motion.button className='bg-indigo-500 p-2 rounded text-white' onClick={() => {setAmount(5000)}}>>5000</motion.button>
 					</motion.div>
 					
 					<motion.button
