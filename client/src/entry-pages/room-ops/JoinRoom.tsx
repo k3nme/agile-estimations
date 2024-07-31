@@ -52,10 +52,10 @@ const JoinRoom = () => {
 				<div className='lg:mr-12 max-w-xs mb-6 lg:mb-0 drop-shadow'>
 					<h2 className='text-2xl font-bold mb-4'>Steps to Take:</h2>
 					<ul className='list-disc list-inside'>
-						<li className='mb-2'>Step 1: Enter the room ID.</li>
-						<li className='mb-2'>Step 2: Click on "Join Room" to proceed.</li>
+						<li className='mb-2'>Enter the room ID.</li>
+						<li className='mb-2'>Click on "Join Room" to proceed.</li>
 						<li className='mb-2'>
-							Step 3: You will be redirected to the room page if the room is
+							You will be redirected to the room page if the room is
 							found.
 						</li>
 					</ul>

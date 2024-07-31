@@ -135,12 +135,12 @@ const CreateRoom = () => {
 				<div className='lg:mr-12 max-w-xs mb-6 lg:mb-0 drop-shadow'>
 					<h2 className='text-2xl font-bold mb-4'>Steps to Take:</h2>
 					<ul className='list-disc list-inside'>
-						<li className='mb-2'>Step 1: Enter a unique Room Name.</li>
-						<li className='mb-2'>Step 2: Select an Estimation Type.</li>
+						<li className='mb-2'>Enter a unique Room Name.</li>
+						<li className='mb-2'>Select an Estimation Type.</li>
 						<li className='mb-2'>
-							Step 3: Optionally, provide Custom Estimation Values.
+							Optionally, provide Custom Estimation Values.
 						</li>
-						<li className='mb-2'>Step 4: Click on "Create Room" to proceed.</li>
+						<li className='mb-2'>Click on "Create Room" to proceed.</li>
 					</ul>
 				</div>
 				{/* Right Content (Form) */}
