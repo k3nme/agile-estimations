@@ -33,7 +33,7 @@ const PlanningPoker = (props: {
 						<>
 							<div className='flex col-span-6 items-center justify-center h-full text-center text-2xl font-semibold'>
 								<h1 className='text-2xl font-bold text-indigo-600 hover:text-indigo-700'>
-									Waiting for other users...
+									You seem to be alone. Please invite players to join this session.
 								</h1>
 							</div>
 						</>
