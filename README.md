@@ -11,7 +11,7 @@
 * Fork the repository, then clone the forked copy.
 * To get the front end running, cd to the client folder and run npx vite.
 * To get the backend running, cd to the server folder and run npm start.
-* Once both commands run successfully, you can access the application end to end.
+* Once both commands run successfully, you can access the application by connecting to the localhost:5173
 
 ### Contribution guidelines ###
 
