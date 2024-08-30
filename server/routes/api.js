@@ -250,7 +250,7 @@ export default async function (fastify, opts) {
     					{ id: roomID, "issues.id": issueID },
     					{
         					$pull: {
-            						[`issues.$[issue].estimations.*`]: userID // This removes userID from any estimation array within the issue
+            						[`issues.$[issue].estimations`]: userID // This removes userID from any estimation array within the issue
         					}
     					},
 					{
