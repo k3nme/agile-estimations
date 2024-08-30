@@ -19,7 +19,7 @@ const Donate = () => {
 					<ul className='list-disc list-inside'>
 						<li className='mb-2'>If you like the application, please consider donating an amount, to show your support.</li>
 						<li className='mb-2'>The donated amount will be used for hosting costs, and maintenance.</li>
-						<li className='mb-2 text-yellow-200'>The payment gateway integration in progress.</li>
+						<li className='mb-2 text-red-500'>The payment gateway integration in progress.</li>
 					</ul>
 				</div>
 				{/* Right Content (Form) */}
