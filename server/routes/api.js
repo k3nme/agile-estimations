@@ -245,20 +245,6 @@ export default async function (fastify, opts) {
 				const db = fastify.mongo.db;
 				const roomsCollection = db.collection(collection_name);
 				
-				// Remove the userID from any estimation arrays across the specific issue
-				await roomsCollection.updateOne(
-    					{ id: roomID, "issues.id": issueID },
-    					{
-        					$pull: {
-            						[`issues.$[issue].estimations`]: userID // This removes userID from any estimation array within the issue
-        					},
-    					},
-					{
-					        arrayFilters: [{ "issue.id": issueID }]
-    					}					
-				);
-
-
 				const result = await roomsCollection.updateOne(
 					{ id: roomID, "issues.id": issueID },
 					{
