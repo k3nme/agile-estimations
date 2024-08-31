@@ -251,7 +251,7 @@ export default async function (fastify, opts) {
     					{
         					$pull: {
             						[`issues.$[issue].estimations`]: userID // This removes userID from any estimation array within the issue
-        					}
+        					},
     					},
 					{
 					        arrayFilters: [{ "issue.id": issueID }]
