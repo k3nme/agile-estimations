@@ -247,7 +247,7 @@ const EstimationComponent = ({
 						<button
 							type='button'
 							disabled={!confirmed[selectedIssue?.id as string]}
-							className='bg-indigo-600 hover:bg-indigo-700 text-white p-2 mx-2 rounded disabled:opacity-50 disabled hidden'
+							className='bg-indigo-600 hover:bg-indigo-700 text-white p-2 mx-2 rounded disabled:opacity-50 disabled'
 							onClick={() =>
 								setConfirmed({ ...confirmed, [selectedIssue.id]: false })
 							}
