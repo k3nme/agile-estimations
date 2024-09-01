@@ -94,12 +94,12 @@ const App = () => {
 					}); // Add the new user to existing users
 				} 
 				else if (data.action === "user-left"){
-					setUsers((prevUsers) => prevUsers.filter((user) => user.id !== data.userID));
 					if (data.userID === currentUser?.id) {
 						navigate("/");
 	                                	updateSessionStorage("user", null);
         	                        	updateSessionStorage("userEntryType", "");
 					}
+					setUsers((prevUsers) => prevUsers.filter((user) => user.id !== data.userID));
 				}
 				else if (data.action === "issue-added") {
 					const newIssue: Issue = {
