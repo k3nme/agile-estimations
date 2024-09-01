@@ -235,7 +235,7 @@ export default async function (fastify, opts) {
                                                 client.send(
                                                         JSON.stringify({
                                                                 action: "user-left",
-                                                                id: id,
+                                                                id,
                                                         })
                                                 );
                                         }
