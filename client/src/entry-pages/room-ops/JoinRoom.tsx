@@ -52,7 +52,7 @@ const JoinRoom = () => {
 				<div className='lg:mr-12 max-w-xs mb-6 lg:mb-0 drop-shadow'>
 					<h2 className='text-2xl font-bold mb-4'>Steps to Take:</h2>
 					<ul className='list-disc list-inside'>
-						<li className='mb-2'>Enter the room ID.</li>
+						<li className='mb-2'>Enter the room code.</li>
 						<li className='mb-2'>Click on "Join Room" to proceed.</li>
 						<li className='mb-2'>
 							You will be redirected to the room page if the room is
@@ -71,7 +71,7 @@ const JoinRoom = () => {
 
 					<TextField
 						error={!!roomIDError}
-						label='Room ID'
+						label='Room Code'
 						fullWidth
 						required
 						variant='outlined'

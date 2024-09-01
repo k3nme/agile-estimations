@@ -76,7 +76,7 @@ const RoomHistory = () => {
 				<div className='lg:mr-12 max-w-xs mb-6 lg:mb-0 drop-shadow'>
 					<h2 className='text-2xl font-bold mb-4'>Steps to Take:</h2>
 					<ul className='list-disc list-inside'>
-						<li className='mb-2'>Enter the room ID.</li>
+						<li className='mb-2'>Enter the room code.</li>
 						<li className='mb-2'>Click on "Export" to proceed.</li>
 						<li className='mb-2'>
 							A CSV file will be downloaded with the issues in the room
@@ -97,7 +97,7 @@ const RoomHistory = () => {
 
 					<TextField
 						error={!!roomIDError}
-						label='Room ID'
+						label='Room Code'
 						fullWidth
 						required
 						disabled={isExportInProgress}
