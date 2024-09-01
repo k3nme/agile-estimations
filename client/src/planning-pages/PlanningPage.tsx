@@ -95,9 +95,11 @@ const App = () => {
 				} 
 				else if (data.action === "user-left"){
 					setUsers((prevUsers) => prevUsers.filter((user) => user.id !== data.userID));
-					navigate("/");
-	                                updateSessionStorage("user", null);
-        	                        updateSessionStorage("userEntryType", "");
+					if (data.userID === currentUser.id) {
+						navigate("/");
+	                                	updateSessionStorage("user", null);
+        	                        	updateSessionStorage("userEntryType", "");
+					}
 				}
 				else if (data.action === "issue-added") {
 					const newIssue: Issue = {
