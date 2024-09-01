@@ -94,7 +94,7 @@ const App = () => {
 					}); // Add the new user to existing users
 				} 
 				else if (data.action === "user-left"){
-					setUsers((prevUsers) => prevUsers.filter((user) => user.id !== data.user.id));
+					setUsers((prevUsers) => prevUsers.filter((user) => user.id !== data.userID));
 					navigate("/");
 	                                updateSessionStorage("user", null);
         	                        updateSessionStorage("userEntryType", "");
