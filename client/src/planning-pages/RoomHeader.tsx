@@ -99,14 +99,11 @@ const RoomHeader = ({
 				},
 				body: JSON.stringify({
 					roomID,
-					id: currentUser?.id,
+					user: currentUser,
 				}),
 			});
 			if (response.ok) {
-				navigate("/");
-				updateSessionStorage("user", null);
-				updateSessionStorage("userEntryType", "");
-				console.log("User deleted from the room successfully");
+				console.log("User deleted from the room successfully, navigation will happen from main page");
 			} else {
 				console.log(response);
 				console.log("Request failed with status:", response.status);

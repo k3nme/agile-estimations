@@ -4,10 +4,11 @@ import Issue from "../../../models/Issue";
 import { useParams } from "react-router-dom";
 import RoomHeader from "./RoomHeader";
 import UserNameComponent from "./user-name-dialog/UserNameDialog";
-import { getFromSessionStorage } from "../utilities/P3SessionStorage";
+import { getFromSessionStorage, updateSessionStorage } from "../utilities/P3SessionStorage";
 import User from "../../../models/User";
 import IssuesComponent from "./issue-list/IssuesComponent";
 import { IssueStatus } from "../../../models/IssueStatus";
+import { Link, useNavigate } from "react-router-dom";
 
 interface RevealedState {
 	[key: string]: boolean;
@@ -15,7 +16,7 @@ interface RevealedState {
 
 const App = () => {
 	const { roomID } = useParams();
-
+	const navigate = useNavigate();
 	const [showUserNameDialog, setShowUserNameDialog] = useState(false);
 	const [roomName, setRoomName] = useState("");
 	const [currentUser, setCurrentUser] = useState<User>(
@@ -72,11 +73,33 @@ const App = () => {
 					setSelectedEstimationType(data.selectedEstimationType);
 					setEstimationValues(data.estimationValues);
 					setUsers((prevUsers) => [...prevUsers, ...data.users]); // Merge new users with existing ones
+					setUsers((prevUsers) => {
+						const existingUserIds = new Set(prevUsers.map((user) => user.id));
+						
+						//filter the users
+						const newUsers = data.users.filter((user) => !existingUserIds.has(user.id));
+
+						return [...prevUsers, ...newUsers];
+					});
 					setIssues((prevIssues) => [...prevIssues, ...data.issues]);
 				} else if (data.action === "user-joined") {
 					const newUser: User = data.user;
-					setUsers((prevUsers) => [...prevUsers, newUser]); // Add the new user to existing users
-				} else if (data.action === "issue-added") {
+					setUsers((prevUsers) => {
+						const isUserPresent = prevUsers.some((user) => user.id === newUser.id);
+						// if user is not present, then add to the array
+						if(!isUserPresent){
+							return [...prevUsers, newUser];
+						}
+						return prevUsers;
+					}); // Add the new user to existing users
+				} 
+				else if (data.action === "user-left"){
+					setUsers((prevUsers) => prevUsers.filter((user) => user.id !== data.user.id));
+					navigate("/");
+	                                updateSessionStorage("user", null);
+        	                        updateSessionStorage("userEntryType", "");
+				}
+				else if (data.action === "issue-added") {
 					const newIssue: Issue = {
 						id: data.id,
 						title: data.title,

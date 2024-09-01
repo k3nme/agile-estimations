@@ -210,7 +210,7 @@ export default async function (fastify, opts) {
 	fastify.register(async function (fastify) {
 		fastify.delete("/remove-user-from-room", async (request, reply) => {
 			try {
-				const { roomID, id } = request.body;
+				const { roomID, user} = request.body;
 
 				console.log("roomID: " + roomID + ", user: " + id);
 
@@ -222,13 +222,24 @@ export default async function (fastify, opts) {
 					{
 						$pull: {
 							user: {
-								id: id,
+								id: user.id,
 							},
 						},
 					}
 				);
 
 				reply.code(201).send(result);
+
+				if (clientsPerRoom.has(roomID)) {
+                                        for (const client of clientsPerRoom.get(roomID)) {
+                                                client.send(
+                                                        JSON.stringify({
+                                                                action: "user-left",
+                                                                user: user,
+                                                        })
+                                                );
+                                        }
+                                }
 			} catch (error) {
 				console.error(error);
 				reply.status(500).send({ error: "Failed to create room" });
@@ -344,8 +355,10 @@ export default async function (fastify, opts) {
 				} else {
 					
 					const totalEstimation = Object.keys(estimations).reduce(
-						(acc, key) => acc + Number(key) * estimations[key].length,
-						0
+						(acc, key) => {
+							const numericKey = isNaN(Number(key)) ? 0 : Number(key);
+							return acc + numericKey * estimations[key].length;
+						}, 0
 					);
 			
 				
