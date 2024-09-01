@@ -72,7 +72,6 @@ const App = () => {
 					setRoomName(data.name);
 					setSelectedEstimationType(data.selectedEstimationType);
 					setEstimationValues(data.estimationValues);
-					setUsers((prevUsers) => [...prevUsers, ...data.users]); // Merge new users with existing ones
 					setUsers((prevUsers) => {
 						const existingUserIds = new Set(prevUsers.map((user) => user.id));
 						
