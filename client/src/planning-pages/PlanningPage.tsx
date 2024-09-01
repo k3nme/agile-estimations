@@ -93,13 +93,13 @@ const App = () => {
 					}); // Add the new user to existing users
 				} 
 				else if (data.action === "user-left"){
-					console.log("the data is :" + data.userID + ", current is :" + currentUser?.id); 
-					if (data.userID === currentUser?.id) {
+					console.log("the data is :" + data.id + ", current is :" + currentUser?.id); 
+					if (data.id === currentUser?.id) {
 						navigate("/");
 	                                	updateSessionStorage("user", null);
         	                        	updateSessionStorage("userEntryType", "");
 					}
-					setUsers((prevUsers) => prevUsers.filter((user) => user.id !== data.userID));
+					setUsers((prevUsers) => prevUsers.filter((user) => user.id !== data.id));
 				}
 				else if (data.action === "issue-added") {
 					const newIssue: Issue = {
