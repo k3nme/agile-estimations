@@ -95,7 +95,7 @@ const App = () => {
 				} 
 				else if (data.action === "user-left"){
 					setUsers((prevUsers) => prevUsers.filter((user) => user.id !== data.userID));
-					if (data.userID === currentUser.id) {
+					if (currentUser && data.userID === currentUser?.id) {
 						navigate("/");
 	                                	updateSessionStorage("user", null);
         	                        	updateSessionStorage("userEntryType", "");
