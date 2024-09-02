@@ -80,7 +80,7 @@ const PlanningPoker = (props: {
 				{selectedIssue != null &&
 					(users.length <= 1 ? (
 						<>
-							<div className='flex col-span-6 items-center justify-center h-full text-center text-2xl font-semibold'>
+							<div className='flex flex-row col-span-6 items-center justify-center h-full text-center text-2xl font-semibold'>
 								<h1 className='text-2xl font-bold text-indigo-600 hover:text-indigo-700'>
 									You seem to be alone. Please invite players to join this session.
 								</h1>
@@ -97,7 +97,7 @@ const PlanningPoker = (props: {
 									<button
                                                                 		title='Copy Link'
                                                                 		type='button'
-                                                                		className='w-fit bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-2 rounded '
+                                                                		className='w-fit text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-2 rounded '
                                                                 		onClick={copyLink}
                                                         		>
                                                                 		Copy Link
@@ -106,7 +106,7 @@ const PlanningPoker = (props: {
                                                         		<button
                                                                 		title='Copy Code'
                                                                 		type='button'
-                                                                		className='w-fit bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-2 rounded'
+                                                                		className='w-fit text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-2 rounded'
                                                                 		onClick={copyCode}
                                                         		>
                                                                 		Copy Code
