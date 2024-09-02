@@ -80,36 +80,27 @@ const PlanningPoker = (props: {
 				{selectedIssue != null &&
 					(users.length <= 1 ? (
 						<>
-							<div className='flex flex-row col-span-6 items-center justify-center h-full text-center text-2xl font-semibold'>
+							<div className='flex flex-col col-span-6 items-center justify-center h-full text-center text-2xl font-semibold'>
 								<h1 className='text-2xl font-bold text-indigo-600 hover:text-indigo-700'>
 									You seem to be alone. Please invite players to join this session.
 								</h1>
-								<div className='flex w-full'>
-									<TextField
-                                                                		label='Room Link'
-                                                                		id='roomLink'
-                                                                		margin='dense'
-                                                                		required
-                                                                		disabled
-                                                                		variant='outlined'
-                                                                		value={window.location.href}
-                                                        		/>
+								<div className='flex h-fit'>
 									<button
                                                                 		title='Copy Link'
                                                                 		type='button'
-                                                                		className='w-fit text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-2 rounded '
+                                                                		className='w-fit text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-2 m-4 rounded '
                                                                 		onClick={copyLink}
                                                         		>
-                                                                		Copy Link
+                                                                		Copy Invite Link
                                                         		</button>
 
                                                         		<button
                                                                 		title='Copy Code'
                                                                 		type='button'
-                                                                		className='w-fit text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-2 rounded'
+                                                                		className='w-fit text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-2 m-4 rounded'
                                                                 		onClick={copyCode}
                                                         		>
-                                                                		Copy Code
+                                                                		Copy Invite Code
                                                         		</button>
 								</div>
 							</div>
