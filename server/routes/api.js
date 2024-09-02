@@ -210,9 +210,9 @@ export default async function (fastify, opts) {
 	fastify.register(async function (fastify) {
 		fastify.delete("/remove-user-from-room", async (request, reply) => {
 			try {
-				const { roomID, user} = request.body;
+				const { roomID, currentUser} = request.body;
 
-				console.log("roomID: " + roomID + ", user: " + user);
+				console.log("roomID: " + roomID + ", user: " + currentUser);
 
 				const db = fastify.mongo.db;
 				const roomsCollection = db.collection(collection_name);
@@ -222,7 +222,7 @@ export default async function (fastify, opts) {
 					{
 						$pull: {
 							user: {
-								id: user.id,
+								id: currentUser.id,
 							},
 						},
 					}
@@ -235,7 +235,7 @@ export default async function (fastify, opts) {
                                                 client.send(
                                                         JSON.stringify({
                                                                 action: "user-left",
-                                                                user: user,
+                                                                user: currentUser,
                                                         })
                                                 );
                                         }
