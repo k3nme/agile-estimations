@@ -93,8 +93,9 @@ const App = () => {
 					}); // Add the new user to existing users
 				} 
 				else if (data.action === "user-left"){
-					console.log("the data is :" + data.user.id + ", current is :" + currentUser?.id); 
-					if (data.user.id === currentUser?.id) {
+					let currentUserInBrowser = getFromSessionStorage("user") as User;
+					console.log("the data is :" + data.user.id + ", current is :" + currentUserInBrowser?.id); 
+					if (data.user.id === currentUserInBrowser?.id) {
 						navigate("/");
 	                                	updateSessionStorage("user", null);
         	                        	updateSessionStorage("userEntryType", "");
