@@ -212,7 +212,7 @@ export default async function (fastify, opts) {
 			try {
 				const { roomID, user} = request.body;
 
-				console.log("roomID: " + roomID + ", user: " + id);
+				console.log("roomID: " + roomID + ", user: " + user);
 
 				const db = fastify.mongo.db;
 				const roomsCollection = db.collection(collection_name);
@@ -222,7 +222,7 @@ export default async function (fastify, opts) {
 					{
 						$pull: {
 							user: {
-								id: id,
+								id: user.id,
 							},
 						},
 					}

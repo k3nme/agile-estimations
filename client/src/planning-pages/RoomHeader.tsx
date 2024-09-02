@@ -99,7 +99,7 @@ const RoomHeader = ({
 				},
 				body: JSON.stringify({
 					roomID,
-					user: currentUser,
+					currentUser,
 				}),
 			});
 			if (response.ok) {
