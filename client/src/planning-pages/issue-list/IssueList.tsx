@@ -118,7 +118,7 @@ const IssueList = ({
                   }
                 </span>
                 <p
-                  className='text-xl drop-shadow'
+                  className='text-md drop-shadow'
                   title={issue.title}
                 >
                   {issue.title}

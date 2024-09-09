@@ -171,7 +171,7 @@ const UserPolygon = ({
           fontSize='24'
           fontWeight='bold'
           fill='#fff'
-          className='text-2xl p-2 truncate drop-shadow'
+          className='text-2xl p-2 truncate drop-shadow w-20'
         >
           {selectedIssue && selectedIssue.title ? selectedIssue.title : "Title"}
         </text>
@@ -182,7 +182,7 @@ const UserPolygon = ({
           textAnchor='middle'
           fontSize='18'
           fill='#fff'
-          className='text-lg truncate drop-shadow'
+          className='text-lg truncate drop-shadow w-20'
         >
           {selectedIssue && selectedIssue.description ? (
             <tspan>{selectedIssue.description}</tspan>

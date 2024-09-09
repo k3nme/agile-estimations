@@ -146,6 +146,7 @@ const IssuesComponent = (props: {
                       required
                       fullWidth
                       margin='dense'
+                      inputProps={{ maxLength: 10 }}
                       onChange={(e) => setNewIssueTitle(e.target.value)}
                       value={newIssueTitle}
                       helperText={issueTitleError}
