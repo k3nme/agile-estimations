@@ -104,7 +104,7 @@ const IssueList = ({
           >
             <div className='issue-item cursor-pointer flex-grow p-4 bg-white rounded-lg shadow' onClick={() => handleIssueClick(issue)}>
               <div className='issue-title flex justify-between items-center mb-2'>
-                <span className="p-2">
+                <span>
                   {
                     issue.issueStatus.toString() == "Estimated" ? (
                       <CheckCircleIcon
