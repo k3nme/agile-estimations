@@ -20,7 +20,7 @@ const clientsPerRoom = new Map();
 export default async function (fastify, opts) {
 
   fastify.register(cors, {
-    origin: ['https://www.agileestimations.app/'], // Allow requests from any origin
+    origin: ['https://www.agileestimations.app/', '*'], // Allow requests from any origin
     methods: ["GET", "POST", "PUT", "DELETE"], // Allow specified methods
   });
 
