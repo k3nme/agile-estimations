@@ -37,7 +37,7 @@ const Donate = () => {
             disabled
             type='number'
             variant='outlined'
-            onChange={(e) => setAmount(e.target.value)}
+            onChange={(e) => setAmount(Number(e.target.value))}
           />
 
           <motion.div className='grid grid-cols-4 w-full my-2 text-base font-medium justify-between gap-2 text-center'>
@@ -54,7 +54,7 @@ const Donate = () => {
             transition={{ type: "tween", stiffness: 100 }}
             className='flex items-center justify-center text-white bg-indigo-600 hover:bg-indigo-700 mt-6 py-2 px-4 rounded w-full shadow cursor-not-allowed'
             onClick={() => {
-              console.log("Integrate Payment Gateway");
+              // TODO implement payment gateway
             }}
           >
             Donate

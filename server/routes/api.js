@@ -180,9 +180,6 @@ export default async function (fastify, opts) {
     fastify.delete("/remove-issue-from-room", async (request, reply) => {
       try {
         const { roomID, id } = request.body;
-
-        console.log("roomID: " + roomID + ", issueID: " + id);
-
         const db = fastify.mongo.db;
         const roomsCollection = db.collection(collection_name);
 
@@ -220,9 +217,6 @@ export default async function (fastify, opts) {
     fastify.delete("/remove-user-from-room", async (request, reply) => {
       try {
         const { roomID, currentUser } = request.body;
-
-        console.log("roomID: " + roomID + ", user: " + currentUser);
-
         const db = fastify.mongo.db;
         const roomsCollection = db.collection(collection_name);
 
@@ -275,17 +269,6 @@ export default async function (fastify, opts) {
           {
             arrayFilters: [{ "issue.id": issueID }],
           }
-        );
-
-        console.log(
-          "requested with roomID" +
-          request.body.roomID +
-          " issueID" +
-          request.body.issueID +
-          " userID" +
-          request.body.userID +
-          " estimation" +
-          request.body.estimation
         );
 
         reply.code(201).send(result);
@@ -472,18 +455,7 @@ export default async function (fastify, opts) {
         const clientsInRoom = clientsPerRoom.get(roomID) || new Set();
         clientsInRoom.add(connection);
 
-        console.log(
-          "clients in room: " +
-          JSON.stringify(clientsInRoom) +
-          "," +
-          Array.from(clientsInRoom)
-        );
-
         clientsPerRoom.set(roomID, clientsInRoom);
-
-        console.log(
-          "clientsPerRoom after connections: " + JSON.stringify(clientsPerRoom)
-        );
 
         const db = fastify.mongo.db;
 
@@ -498,8 +470,6 @@ export default async function (fastify, opts) {
           connection.close();
           return;
         }
-
-        console.log("room data : " + JSON.stringify(room));
 
         connection.roomID = room.roomID;
         connection.roomName = room.roomName;
