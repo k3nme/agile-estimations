@@ -81,7 +81,7 @@ const Header = () => {
             whileHover={{ scale: 1.0, borderBottom: "1px solid #4f46e5" }}
           >
             <Link to='/contact-us' className='font-medium drop-shadow'>
-              Contact Us
+              About
             </Link>
           </motion.span>
 
@@ -135,7 +135,7 @@ const Header = () => {
               to='/contact-us'
               className='text-indigo-600 hover:text-indigo-700 drop-shadow'
             >
-              Contact Us
+              About
             </Link>
           </MenuItem>
         </Menu>

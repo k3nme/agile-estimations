@@ -11,7 +11,7 @@ import {
   TextField,
 } from "@mui/material";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import User from "../../../models/User";
 import {
   ExitToApp,
@@ -22,7 +22,6 @@ import {
 import { UserType } from "../../../models/UserType";
 import Issue from "../../../models/Issue";
 
-import { updateSessionStorage } from "../../../client/src/utilities/P3SessionStorage";
 import { motion } from "framer-motion";
 import Logo from "../logo/Logo";
 
@@ -44,7 +43,6 @@ const RoomHeader = ({
   onIssueListClick,
 }: Props) => {
   const [open, setOpen] = React.useState(false);
-  const navigate = useNavigate();
   const [showUserInformationDialog, setShowUserInformationDialog] =
     React.useState(false);
 
