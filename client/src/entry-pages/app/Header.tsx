@@ -80,8 +80,8 @@ const Header = () => {
             className='relative cursor-pointer text-indigo-600 hover:text-indigo-700'
             whileHover={{ scale: 1.0, borderBottom: "1px solid #4f46e5" }}
           >
-            <Link to='/donate' className='font-medium drop-shadow'>
-              Donate
+            <Link to='/contact-us' className='font-medium drop-shadow'>
+              Contact Us
             </Link>
           </motion.span>
 
@@ -127,6 +127,15 @@ const Header = () => {
               className='text-indigo-600 hover:text-indigo-700 drop-shadow'
             >
               History
+            </Link>
+          </MenuItem>
+
+          <MenuItem>
+            <Link
+              to='/contact-us'
+              className='text-indigo-600 hover:text-indigo-700 drop-shadow'
+            >
+              Contact Us
             </Link>
           </MenuItem>
         </Menu>
