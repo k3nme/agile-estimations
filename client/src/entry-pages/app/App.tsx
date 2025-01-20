@@ -16,6 +16,7 @@ import JoinRoom from "../room-ops/JoinRoom";
 import RoomHistory from "../room-ops/RoomHistory";
 import ContactUs from "../room-ops/ContactUs";
 import CreateRoom from "../room-ops/CreateRoom";
+import MaintenanceMode from "../home-page/MaintenanceMode";
 
 export const ColorModeContext = createContext({
   setColorMode: () => { },
@@ -65,12 +66,17 @@ function App() {
         <Suspense fallback={<div className='container'>Loading...</div>}>
           <Router>
             <Routes>
-              <Route path='/' element={<Home />} />
-              <Route path='/create-room' element={<CreateRoom />} />
-              <Route path='/join-room' element={<JoinRoom />} />
-              <Route path='/history' element={<RoomHistory />} />
-              <Route path='/contact-us' element={<ContactUs />} />
-              <Route path='/:roomID' element={<PlanningPage />} />
+              <Route path='/' element={<MaintenanceMode/>} />
+              {
+                /**
+                <Route path='/' element={<Home />} />
+                <Route path='/create-room' element={<CreateRoom />} />
+                <Route path='/join-room' element={<JoinRoom />} />
+                <Route path='/history' element={<RoomHistory />} />
+                <Route path='/contact-us' element={<ContactUs />} />
+                <Route path='/:roomID' element={<PlanningPage />} />
+                */
+              }
             </Routes>
           </Router>
         </Suspense>
