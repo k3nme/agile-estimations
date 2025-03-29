@@ -19,6 +19,9 @@ const CreateRoom = () => {
 	const navigate = useNavigate();
 
 	const [roomName, setRoomName] = useState("");
+	const [userId, setUserId] = useState("");
+	const [selectedUserType, setSelectedUserType] =
+		useState<string>("None");
 	const [selectedEstimationType, setSelectedEstimationType] =
 		useState<string>("None");
 	const [selectedEstimationValues, setSelectedEstimationValues] = useState<
@@ -28,10 +31,12 @@ const CreateRoom = () => {
 	const [selectError, setSelectError] = useState("");
 	const [isCreateInProgress, setIsCreateInProgress] = useState(false);
 	const [roomNameError, setRoomNameError] = useState("");
+	const [userIdError, setUserIdError] = useState("");
 	const [customValuesError, setCustomValuesError] = useState("");
 
 	const validateForm = () => {
 		setRoomNameError(!roomName ? "Room Name is required" : "");
+		setUserIdError(!userId ? "User Id is required" : "");
 		setSelectError(
 			selectedEstimationType === "None" ? "Please select an option" : ""
 		);
@@ -106,6 +111,14 @@ const CreateRoom = () => {
 		}
 	};
 
+	const handleUserTypeChange = (event: SelectChangeEvent<string>) => {
+		// Clear error when the selection changes
+		setSelectError("");
+
+		setSelectedUserType(event.target.value as string);
+
+	};
+
 	const handleEstimationTypeChange = (event: SelectChangeEvent<string>) => {
 		// Clear error when the selection changes
 		setSelectError("");
@@ -165,6 +178,55 @@ const CreateRoom = () => {
 						className='mt-4'
 						variant='outlined'
 					/>
+
+					<TextField
+						error={!!roomNameError}
+						label='User ID'
+						required
+						fullWidth
+						margin='dense'
+						disabled={isCreateInProgress}
+						onChange={(e) => setUserId(e.target.value)}
+						value={userId}
+						helperText={userIdError}
+						className='mt-4'
+						variant='outlined'
+					/>
+
+					<FormControl
+						error={!!selectError}
+						fullWidth
+						disabled={isCreateInProgress}
+						margin='dense'
+						className='mt-6'
+					>
+						<InputLabel id='select user-type' margin='dense'>
+							Select User Type
+						</InputLabel>
+						<Select
+							labelId='select-user-type-label'
+							id='select-user-type'
+							value={selectedUserType}
+							onChange={handleUserTypeChange}
+							label='Select User Type'
+							margin='dense'
+							required
+							disabled={isCreateInProgress}
+							fullWidth
+							variant='outlined'
+						>
+							<MenuItem value={"None"} disabled>
+								Select User Type
+							</MenuItem>
+							<MenuItem key="facilitator" value="facilitator">
+								Facilitator
+							</MenuItem>
+							<MenuItem key="spectator" value="spectator">
+								Spectator
+							</MenuItem>
+						</Select>
+						{selectError && <FormHelperText>{selectError}</FormHelperText>}
+					</FormControl>
 
 					<FormControl
 						error={!!selectError}

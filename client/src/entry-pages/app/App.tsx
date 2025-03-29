@@ -66,17 +66,14 @@ function App() {
         <Suspense fallback={<div className='container'>Loading...</div>}>
           <Router>
             <Routes>
-              <Route path='/' element={<MaintenanceMode/>} />
-              {
-                /**
+              {/**<Route path='/' element={<MaintenanceMode/>} /> */}
+              
                 <Route path='/' element={<Home />} />
                 <Route path='/create-room' element={<CreateRoom />} />
                 <Route path='/join-room' element={<JoinRoom />} />
                 <Route path='/history' element={<RoomHistory />} />
-                <Route path='/contact-us' element={<ContactUs />} />
                 <Route path='/:roomID' element={<PlanningPage />} />
-                */
-              }
+               
             </Routes>
           </Router>
         </Suspense>

@@ -74,18 +74,7 @@ const Header = () => {
               History
             </Link>
           </motion.span>
-          <span className='text-indigo-600 hover:text-indigo-700'>|</span>
-          {/* History Link */}
-          <motion.span
-            className='relative cursor-pointer text-indigo-600 hover:text-indigo-700'
-            whileHover={{ scale: 1.0, borderBottom: "1px solid #4f46e5" }}
-          >
-            <Link to='/contact-us' className='font-medium drop-shadow'>
-              About
-            </Link>
-          </motion.span>
 
-          {/* Join Room Link */}
         </div>
 
         {/* Menu for Mobile */}
