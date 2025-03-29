@@ -149,6 +149,8 @@ const CreateRoom = () => {
 					<h2 className='text-2xl font-bold mb-4'>Steps to Take:</h2>
 					<ul className='list-disc list-inside'>
 						<li className='mb-2'>Enter a unique Room Name.</li>
+						<li className='mb-2'>Enter a unique User Id.</li>
+						<li className='mb-2'>Select User Type.</li>
 						<li className='mb-2'>Select an Estimation Type.</li>
 						<li className='mb-2'>
 							Optionally, provide Custom Estimation Values.
