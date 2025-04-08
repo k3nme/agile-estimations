@@ -3,8 +3,10 @@ import PlanningPoker from "./planning-poker-div/PlanningPokerComponent";
 import Issue from "../../../models/Issue";
 import { useParams } from "react-router-dom";
 import RoomHeader from "./RoomHeader";
-import UserNameComponent from "./user-name-dialog/UserNameDialog";
-import { getFromSessionStorage, updateSessionStorage } from "../utilities/P3SessionStorage";
+import {
+  getFromSessionStorage,
+  updateSessionStorage,
+} from "../utilities/P3SessionStorage";
 import User from "../../../models/User";
 import IssuesComponent from "./issue-list/IssuesComponent";
 import { IssueStatus } from "../../../models/IssueStatus";
@@ -20,19 +22,19 @@ const App = () => {
   const [showUserNameDialog, setShowUserNameDialog] = useState(false);
   const [roomName, setRoomName] = useState("");
   const [currentUser, setCurrentUser] = useState<User>(
-    getFromSessionStorage("user") as User
+    getFromSessionStorage("user") as User,
   );
   const [selectedEstimationType, setSelectedEstimationType] =
     useState<string>("");
   const [estimationValues, setEstimationValues] = useState<string[]>([]);
   const [issues, setIssues] = useState<Issue[]>([]);
   const [users, setUsers] = useState<User[]>(
-    currentUser ? [currentUser as User] : []
+    currentUser ? [currentUser as User] : [],
   );
   const roomSocket = useRef<WebSocket | undefined>();
 
   const [showIssueList, setShowIssueList] = useState(
-    window.innerWidth > 768 ? true : false
+    window.innerWidth > 768 ? true : false,
   );
 
   const handleUserNameDialogClose = () => {
@@ -45,14 +47,14 @@ const App = () => {
   };
 
   const establishWebSocketConnection = (
-    roomID: string
+    roomID: string,
   ): WebSocket | undefined => {
     if (
       !roomSocket.current ||
       roomSocket.current.readyState !== WebSocket.OPEN
     ) {
       const socket = new WebSocket(
-        `wss://planning-poker-gjur.onrender.com/connect-to-room/` + roomID
+        `wss://planning-poker-gjur.onrender.com/connect-to-room/` + roomID,
       );
 
       socket.onopen = () => {
@@ -69,7 +71,9 @@ const App = () => {
             const existingUserIds = new Set(prevUsers.map((user) => user.id));
 
             //filter the users
-            const newUsers = data.users.filter((user: User) => !existingUserIds.has(user.id));
+            const newUsers = data.users.filter(
+              (user: User) => !existingUserIds.has(user.id),
+            );
 
             return [...prevUsers, ...newUsers];
           });
@@ -77,25 +81,32 @@ const App = () => {
         } else if (data.action === "user-joined") {
           const newUser: User = data.user;
           setUsers((prevUsers) => {
-            const isUserPresent = prevUsers.some((user) => user.id === newUser.id);
+            const isUserPresent = prevUsers.some(
+              (user) => user.id === newUser.id,
+            );
             // if user is not present, then add to the array
             if (!isUserPresent) {
               return [...prevUsers, newUser];
             }
             return prevUsers;
           }); // Add the new user to existing users
-        }
-        else if (data.action === "user-left") {
+        } else if (data.action === "user-left") {
           const currentUserInBrowser = getFromSessionStorage("user") as User;
-          console.log("the data is :" + data.user.id + ", current is :" + currentUserInBrowser?.id);
+          console.log(
+            "the data is :" +
+              data.user.id +
+              ", current is :" +
+              currentUserInBrowser?.id,
+          );
           if (data.user.id === currentUserInBrowser?.id) {
             navigate("/");
             updateSessionStorage("user", null);
             updateSessionStorage("userEntryType", "");
           }
-          setUsers((prevUsers) => prevUsers.filter((user) => user.id !== data.user.id));
-        }
-        else if (data.action === "issue-added") {
+          setUsers((prevUsers) =>
+            prevUsers.filter((user) => user.id !== data.user.id),
+          );
+        } else if (data.action === "issue-added") {
           const newIssue: Issue = {
             id: data.id,
             title: data.title,
@@ -107,10 +118,10 @@ const App = () => {
           setIssues((prevIssues) => [...prevIssues, newIssue]); // Add the new issue to existing issues
         } else if (data.action === "issue-deleted") {
           setIssues((prevIssues) =>
-            prevIssues.filter((issue) => issue.id !== data.id)
+            prevIssues.filter((issue) => issue.id !== data.id),
           );
           setSelectedIssue(
-            selectedIssue?.id === data.id ? null : selectedIssue
+            selectedIssue?.id === data.id ? null : selectedIssue,
           );
         } else if (data.action === "final-estimation-updated") {
           if (
@@ -151,7 +162,7 @@ const App = () => {
               console.log(
                 "Issue ID:",
                 issue.id + " Data Issue ID:",
-                data.issueID
+                data.issueID,
               );
               if (issue.id === data.issueID) {
                 const estimation = data.estimation as string;
@@ -186,7 +197,7 @@ const App = () => {
     issues.reduce((acc, issue) => {
       acc[issue.id] = issue.issueStatus === IssueStatus.Estimated;
       return acc;
-    }, {} as RevealedState)
+    }, {} as RevealedState),
   );
 
   const handleIssueSelection = (issue: Issue) => {
@@ -204,8 +215,8 @@ const App = () => {
   }, [roomID, currentUser]);
 
   return (
-    <div className='flex h-screen'>
-      <div className='flex flex-col bg-slate-100 flex-grow'>
+    <div className="flex h-screen">
+      <div className="flex flex-col bg-slate-100 flex-grow">
         <RoomHeader
           roomID={roomID as string}
           roomTitle={roomName}
@@ -214,10 +225,10 @@ const App = () => {
           issues={issues}
           onIssueListClick={handleIssueListClick}
         />
-        <div className='flex flex-grow'>
-          <div className='flex-1 lg:flex-1 lg:min-h-0'>
-            <div className='h-full flex'>
-              <div className='planning-poker-container flex flex-col flex-grow h-full'>
+        <div className="flex flex-grow">
+          <div className="flex-1 lg:flex-1 lg:min-h-0">
+            <div className="h-full flex">
+              <div className="planning-poker-container flex flex-col flex-grow h-full">
                 <PlanningPoker
                   roomID={roomID as string}
                   currentUser={currentUser as User}
@@ -232,8 +243,8 @@ const App = () => {
             </div>
           </div>
           {showIssueList && (
-            <div className='fixed inset-0 z-10 md:relative md:w-1/4 md:z-auto'>
-              <div className='absolute inset-0 bg-white'>
+            <div className="fixed inset-0 z-10 md:relative md:w-1/4 md:z-auto">
+              <div className="absolute inset-0 bg-white">
                 <IssuesComponent
                   roomID={roomID}
                   currentUser={currentUser as User}
@@ -248,14 +259,6 @@ const App = () => {
             </div>
           )}
         </div>
-
-        {showUserNameDialog && roomID && (
-          <UserNameComponent
-            open={showUserNameDialog}
-            handleClose={handleUserNameDialogClose}
-            roomID={roomID}
-          />
-        )}
       </div>
     </div>
   );
