@@ -67,8 +67,8 @@ const RoomHeader = ({
     setOpen(true);
   };
 
-  const handleExitRoom = () => {
-    deleteUserFromRoom();
+  const handleExitRoom = (currentUser: User | undefined) => {
+    deleteUserFromRoom(currentUser);
   };
 
   const handleMenuClose = () => {
@@ -87,7 +87,7 @@ const RoomHeader = ({
     setShowUserInformationDialog(true);
   };
 
-  const deleteUserFromRoom = async () => {
+  const deleteUserFromRoom = async (user: User | undefined) => {
     try {
       const response = await fetch("https://planning-poker-gjur.onrender.com/remove-user-from-room", {
         method: "DELETE",
@@ -97,7 +97,7 @@ const RoomHeader = ({
         },
         body: JSON.stringify({
           roomID,
-          currentUser,
+          user: user ? user : currentUser,
         }),
       });
       if (response.ok) {
@@ -247,7 +247,7 @@ const RoomHeader = ({
                   ) : (
                     <Person />
                   )}
-                  {currentUser.name}
+                  {currentUser.id}
                 </motion.span>
                 <Menu
                   anchorEl={userAnchorEl}
@@ -259,7 +259,9 @@ const RoomHeader = ({
                       type='button'
                       whileHover={{ fontWeight: "bold" }}
                       className='self-center text-indigo-600 hover:text-indigo-700 font-medium  rounded '
-                      onClick={handleExitRoom}
+                      onClick = {() => {
+                        handleExitRoom(currentUser);
+                      }}
                     >
                       <ExitToAppTwoTone /> Exit
                     </motion.button>
@@ -320,7 +322,7 @@ const RoomHeader = ({
                 <Person className='text-indigo-600 hover:text-indigo-700 drop-shadow' />
               )}
               <p className='text-indigo-600 hover:text-indigo-700 drop-shadow'>
-                {currentUser.name}
+                {currentUser.id}
               </p>
             </MenuItem>
           )}
@@ -337,7 +339,7 @@ const RoomHeader = ({
           <MenuItem
             onClick={() => {
               handleMenuClose();
-              handleExitRoom();
+              handleExitRoom(currentUser);
             }}
           >
             <ExitToApp className='text-indigo-600 hover:text-indigo-700 drop-shadow' />
@@ -408,9 +410,22 @@ const RoomHeader = ({
                 <div className='font-bold'>Spectator?</div>
                 {users.map((user, index) => (
                   <React.Fragment key={index}>
-                    <div>{user.name}</div>
+                    <div>{user.id}</div>
                     <div>{user.type}</div>
                     <div>{user.isSpectator ? "Yes" : "No"}</div>
+                    {user.type === UserType.Facilitator.toString() && (
+                      <MenuItem
+                      onClick={() => {
+                        handleMenuClose();
+                        handleExitRoom(user);
+                      }}
+                    >
+                      <ExitToApp className='text-indigo-600 hover:text-indigo-700 drop-shadow' />
+                      <p className='text-indigo-600 hover:text-indigo-700 drop-shadow'>
+                        x
+                      </p>
+                    </MenuItem>
+                    )}
                   </React.Fragment>
                 ))}
               </div>

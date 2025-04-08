@@ -417,7 +417,6 @@ export default async function (fastify, opts) {
           {
             $push: {
               users: {
-                name: user.name,
                 id: user.id,
                 type: user.type,
                 isSpectator: user.isSpectator,

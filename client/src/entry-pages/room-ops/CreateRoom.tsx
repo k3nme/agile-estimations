@@ -1,12 +1,14 @@
 import { motion } from "framer-motion";
 import Header from "../app/Header";
 import {
+	colors,
 	FormControl,
 	FormHelperText,
 	InputLabel,
 	MenuItem,
 	Select,
 	SelectChangeEvent,
+	Switch,
 	TextField,
 } from "@mui/material";
 import EstimationType from "../../../../models/EstimationType";
@@ -14,6 +16,8 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { updateSessionStorage } from "../../utilities/P3SessionStorage";
 import { generateID } from "../../utilities/HelperMethods";
+import { UserType } from "../../../../models/UserType";
+import User from "../../../../models/User";
 
 const CreateRoom = () => {
 	const navigate = useNavigate();
@@ -33,6 +37,10 @@ const CreateRoom = () => {
 	const [roomNameError, setRoomNameError] = useState("");
 	const [userIdError, setUserIdError] = useState("");
 	const [customValuesError, setCustomValuesError] = useState("");
+	const [isSpectator, setIsSpectator] = useState(false);
+	  const handleSpectator = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setIsSpectator(event.target.checked);
+	  };
 
 	const validateForm = () => {
 		setRoomNameError(!roomName ? "Room Name is required" : "");
@@ -71,9 +79,14 @@ const CreateRoom = () => {
 	};
 
 	const createRoom = async () => {
-		if (roomName && selectedEstimationType) {
+		if (roomName && selectedEstimationType && userId) {
 			updateSessionStorage("userEntryType", "create");
 			setIsCreateInProgress(true);
+			const currentUser: User = {
+				id: userId,
+				type: UserType.Facilitator,
+				isSpectator,
+			  };
 			try {
 				const roomID = generateID();
 
@@ -86,7 +99,7 @@ const CreateRoom = () => {
 					body: JSON.stringify({
 						id: roomID,
 						name: roomName,
-						users: [],
+						users: [currentUser],
 						issues: [],
 						selectedEstimationType: selectedEstimationType,
 						selectedEstimationValues:
@@ -195,40 +208,7 @@ const CreateRoom = () => {
 						variant='outlined'
 					/>
 
-					<FormControl
-						error={!!selectError}
-						fullWidth
-						disabled={isCreateInProgress}
-						margin='dense'
-						className='mt-6'
-					>
-						<InputLabel id='select user-type' margin='dense'>
-							Select User Type
-						</InputLabel>
-						<Select
-							labelId='select-user-type-label'
-							id='select-user-type'
-							value={selectedUserType}
-							onChange={handleUserTypeChange}
-							label='Select User Type'
-							margin='dense'
-							required
-							disabled={isCreateInProgress}
-							fullWidth
-							variant='outlined'
-						>
-							<MenuItem value={"None"} disabled>
-								Select User Type
-							</MenuItem>
-							<MenuItem key="facilitator" value="facilitator">
-								Facilitator
-							</MenuItem>
-							<MenuItem key="spectator" value="spectator">
-								Spectator
-							</MenuItem>
-						</Select>
-						{selectError && <FormHelperText>{selectError}</FormHelperText>}
-					</FormControl>
+					
 
 					<FormControl
 						error={!!selectError}
@@ -279,7 +259,24 @@ const CreateRoom = () => {
 							className='mt-6'
 						/>
 					)}
-
+			<div className='flex justify-between items-center px-2 py-2 w-full sm:w-auto'>
+				<p>Join as spectator</p>
+				<div>
+				<Switch
+					checked={isSpectator}
+					onChange={handleSpectator}
+					sx={{
+					"& .MuiSwitch-switchBase.Mui-checked": {
+						color: colors.blue[900],
+					},
+					"& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
+						backgroundColor: colors.blue[900],
+					},
+					}}
+				/>
+				
+				</div>
+			</div>
 					<motion.button
 						type='button'
 						whileHover={{ scale: 1.05 }}

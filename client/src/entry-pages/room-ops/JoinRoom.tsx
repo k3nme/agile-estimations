@@ -1,14 +1,22 @@
 import { motion } from "framer-motion";
 import Header from "../app/Header";
-import { TextField } from "@mui/material";
+import { colors, Switch, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { UserType } from "../../../../models/UserType";
+import User from "../../../../models/User";
 
 const JoinRoom = () => {
 	const navigate = useNavigate();
 	const [roomID, setRoomID] = useState("");
+	const [userId, setUserId] = useState("");
 	const [roomIDError, setRoomIDError] = useState("");
+		const [userIdError, setUserIdError] = useState("");
 	const [isJoinInProgress, setIsJoinInProgress] = useState(false);
+	const [isSpectator, setIsSpectator] = useState(false);
+		  const handleSpectator = (event: React.ChangeEvent<HTMLInputElement>) => {
+			setIsSpectator(event.target.checked);
+		  };
 	const joinRoom = async () => {
 		if (roomID) {
 			setIsJoinInProgress(true);
@@ -21,11 +29,32 @@ const JoinRoom = () => {
 					},
 				});
 				if (response.ok) {
-					navigate("/" + roomID, {
-						state: {
-							roomID: roomID,
-						},
-					});
+					const currentUser: User = {
+						id: userId,
+						type: UserType.Participant,
+						isSpectator,
+					  };
+					const response = await fetch("https://planning-poker-gjur.onrender.com/add-user-to-room", {
+							  method: "POST",
+							  headers: {
+								"Content-Type": "application/json",
+								"Access-Control-Allow-Origin": "https://planning-poker-gjur.onrender.com/*",
+							  },
+							  body: JSON.stringify({
+								id: roomID,
+								user: currentUser,
+							  }),
+							});
+							if (response.ok) {
+								navigate("/" + roomID, {
+									state: {
+										roomID: roomID,
+									},
+								});
+							} else {
+							  console.log("Request failed with status:", response.status);
+							}
+					
 				} else {
 					if (response.status === 404) {
 						setRoomIDError("Room not found");
@@ -81,6 +110,37 @@ const JoinRoom = () => {
 						helperText={roomIDError}
 					/>
 
+					<TextField
+						error={!!roomIDError}
+						label='User ID'
+						required
+						fullWidth
+						margin='dense'
+						disabled={isJoinInProgress}
+						onChange={(e) => setUserId(e.target.value)}
+						value={userId}
+						helperText={userIdError}
+						className='mt-4'
+						variant='outlined'
+					/>
+
+					<div className='flex justify-between items-center px-2 py-2 w-full sm:w-auto'>
+						<p>Join as spectator</p>
+						<div>
+						<Switch
+							checked={isSpectator}
+							onChange={handleSpectator}
+							sx={{
+							"& .MuiSwitch-switchBase.Mui-checked": {
+								color: colors.blue[900],
+							},
+							"& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
+								backgroundColor: colors.blue[900],
+							},
+							}}
+						/>
+						</div>
+					</div>
 					<motion.button
 						type='button'
 						whileHover={{ scale: 1.05 }}
