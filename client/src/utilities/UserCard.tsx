@@ -85,7 +85,7 @@ const UserCard = ({
 					}`}
 					style={{ backfaceVisibility: "hidden" }}
 				>
-					{user.name}
+					{user.id}
 				</motion.p>
 				<motion.p
 					className='text-center text-sm'

@@ -1,12 +1,14 @@
 import { motion } from "framer-motion";
 import Header from "../app/Header";
 import {
+	colors,
 	FormControl,
 	FormHelperText,
 	InputLabel,
 	MenuItem,
 	Select,
 	SelectChangeEvent,
+	Switch,
 	TextField,
 } from "@mui/material";
 import EstimationType from "../../../../models/EstimationType";
@@ -14,11 +16,16 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { updateSessionStorage } from "../../utilities/P3SessionStorage";
 import { generateID } from "../../utilities/HelperMethods";
+import { UserType } from "../../../../models/UserType";
+import User from "../../../../models/User";
 
 const CreateRoom = () => {
 	const navigate = useNavigate();
 
 	const [roomName, setRoomName] = useState("");
+	const [userId, setUserId] = useState("");
+	const [selectedUserType, setSelectedUserType] =
+		useState<string>("None");
 	const [selectedEstimationType, setSelectedEstimationType] =
 		useState<string>("None");
 	const [selectedEstimationValues, setSelectedEstimationValues] = useState<
@@ -28,10 +35,16 @@ const CreateRoom = () => {
 	const [selectError, setSelectError] = useState("");
 	const [isCreateInProgress, setIsCreateInProgress] = useState(false);
 	const [roomNameError, setRoomNameError] = useState("");
+	const [userIdError, setUserIdError] = useState("");
 	const [customValuesError, setCustomValuesError] = useState("");
+	const [isSpectator, setIsSpectator] = useState(false);
+	  const handleSpectator = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setIsSpectator(event.target.checked);
+	  };
 
 	const validateForm = () => {
 		setRoomNameError(!roomName ? "Room Name is required" : "");
+		setUserIdError(!userId ? "User Id is required" : "");
 		setSelectError(
 			selectedEstimationType === "None" ? "Please select an option" : ""
 		);
@@ -66,9 +79,14 @@ const CreateRoom = () => {
 	};
 
 	const createRoom = async () => {
-		if (roomName && selectedEstimationType) {
+		if (roomName && selectedEstimationType && userId) {
 			updateSessionStorage("userEntryType", "create");
 			setIsCreateInProgress(true);
+			const currentUser: User = {
+				id: userId,
+				type: UserType.Facilitator,
+				isSpectator,
+			  };
 			try {
 				const roomID = generateID();
 
@@ -81,7 +99,7 @@ const CreateRoom = () => {
 					body: JSON.stringify({
 						id: roomID,
 						name: roomName,
-						users: [],
+						users: [currentUser],
 						issues: [],
 						selectedEstimationType: selectedEstimationType,
 						selectedEstimationValues:
@@ -104,6 +122,14 @@ const CreateRoom = () => {
 			}
 			setIsCreateInProgress(false);
 		}
+	};
+
+	const handleUserTypeChange = (event: SelectChangeEvent<string>) => {
+		// Clear error when the selection changes
+		setSelectError("");
+
+		setSelectedUserType(event.target.value as string);
+
 	};
 
 	const handleEstimationTypeChange = (event: SelectChangeEvent<string>) => {
@@ -136,6 +162,8 @@ const CreateRoom = () => {
 					<h2 className='text-2xl font-bold mb-4'>Steps to Take:</h2>
 					<ul className='list-disc list-inside'>
 						<li className='mb-2'>Enter a unique Room Name.</li>
+						<li className='mb-2'>Enter a unique User Id.</li>
+						<li className='mb-2'>Select User Type.</li>
 						<li className='mb-2'>Select an Estimation Type.</li>
 						<li className='mb-2'>
 							Optionally, provide Custom Estimation Values.
@@ -165,6 +193,22 @@ const CreateRoom = () => {
 						className='mt-4'
 						variant='outlined'
 					/>
+
+					<TextField
+						error={!!roomNameError}
+						label='User ID'
+						required
+						fullWidth
+						margin='dense'
+						disabled={isCreateInProgress}
+						onChange={(e) => setUserId(e.target.value)}
+						value={userId}
+						helperText={userIdError}
+						className='mt-4'
+						variant='outlined'
+					/>
+
+					
 
 					<FormControl
 						error={!!selectError}
@@ -215,7 +259,24 @@ const CreateRoom = () => {
 							className='mt-6'
 						/>
 					)}
-
+			<div className='flex justify-between items-center px-2 py-2 w-full sm:w-auto'>
+				<p>Join as spectator</p>
+				<div>
+				<Switch
+					checked={isSpectator}
+					onChange={handleSpectator}
+					sx={{
+					"& .MuiSwitch-switchBase.Mui-checked": {
+						color: colors.blue[900],
+					},
+					"& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
+						backgroundColor: colors.blue[900],
+					},
+					}}
+				/>
+				
+				</div>
+			</div>
 					<motion.button
 						type='button'
 						whileHover={{ scale: 1.05 }}
