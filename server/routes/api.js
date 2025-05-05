@@ -1,5 +1,3 @@
-"use strict";
-
 import fastifyMongodb from "@fastify/mongodb";
 import websocket from "@fastify/websocket";
 import rateLimit from "@fastify/rate-limit";
@@ -10,17 +8,16 @@ import cors from "@fastify/cors";
 const db_name = "agile_estimations";
 const collection_name = "rooms";
 
-const mode = "prod";
+const mode = "dev";
 
-const dev_url = "mongodb://localhost:3000/" + db_name;
+const dev_url = `mongodb://localhost:27017/${db_name}`;
 const prod_url = process.env.MONGODB_URI + db_name;
 
 const clientsPerRoom = new Map();
 
 export default async function (fastify, opts) {
-
   fastify.register(cors, {
-    origin: ['https://www.agileestimations.app/', '*'], // Allow requests from any origin
+    origin: ["https://www.agileestimations.app/", "*"], // Allow requests from any origin
     methods: ["GET", "POST", "PUT", "DELETE"], // Allow specified methods
   });
 
@@ -35,12 +32,12 @@ export default async function (fastify, opts) {
 
   fastify.register(helmet);
 
-  fastify.get('/', async (request, reply) => {
-    return { hello: 'world' }
+  fastify.get("/", async (request, reply) => {
+    return { hello: "world" };
   });
 
   fastify.register(fastifyMongodb, {
-    url: mode === "dev" ? dev_url : prod_url
+    url: mode === "dev" ? dev_url : prod_url,
   });
 
   // Create Room Collection with TTL index
@@ -51,7 +48,7 @@ export default async function (fastify, opts) {
     // Create TTL index on 'createdAt' field with expiration time of 3 days
     await roomsCollection.createIndex(
       { createdAt: 1 },
-      { expireAfterSeconds: 259200 }
+      { expireAfterSeconds: 259200 },
     );
   });
 
@@ -59,7 +56,7 @@ export default async function (fastify, opts) {
     console.error(error);
   });
 
-  fastify.register(async function (fastify) {
+  fastify.register(async (fastify) => {
     fastify.post("/create-room", async (request, reply) => {
       try {
         const {
@@ -94,7 +91,7 @@ export default async function (fastify, opts) {
     });
   });
 
-  fastify.register(async function (fastify) {
+  fastify.register(async (fastify) => {
     fastify.get("/get-room-data/:roomID", async (request, reply) => {
       try {
         const { roomID } = request.params;
@@ -120,7 +117,7 @@ export default async function (fastify, opts) {
     });
   });
 
-  fastify.register(async function (fastify) {
+  fastify.register(async (fastify) => {
     fastify.post("/add-issue-to-room", async (request, reply) => {
       try {
         const {
@@ -149,7 +146,7 @@ export default async function (fastify, opts) {
                 estimations,
               },
             },
-          }
+          },
         );
 
         reply.code(201).send(result);
@@ -165,7 +162,7 @@ export default async function (fastify, opts) {
                 finalEstimation,
                 issueStatus,
                 estimations,
-              })
+              }),
             );
           }
         }
@@ -176,7 +173,7 @@ export default async function (fastify, opts) {
     });
   });
 
-  fastify.register(async function (fastify) {
+  fastify.register(async (fastify) => {
     fastify.delete("/remove-issue-from-room", async (request, reply) => {
       try {
         const { roomID, id } = request.body;
@@ -191,7 +188,7 @@ export default async function (fastify, opts) {
                 id: id,
               },
             },
-          }
+          },
         );
 
         reply.code(201).send(result);
@@ -202,7 +199,7 @@ export default async function (fastify, opts) {
               JSON.stringify({
                 action: "issue-deleted",
                 id: id,
-              })
+              }),
             );
           }
         }
@@ -213,7 +210,7 @@ export default async function (fastify, opts) {
     });
   });
 
-  fastify.register(async function (fastify) {
+  fastify.register(async (fastify) => {
     fastify.delete("/remove-user-from-room", async (request, reply) => {
       try {
         const { roomID, currentUser } = request.body;
@@ -228,7 +225,7 @@ export default async function (fastify, opts) {
                 id: currentUser.id,
               },
             },
-          }
+          },
         );
 
         reply.code(201).send(result);
@@ -239,7 +236,7 @@ export default async function (fastify, opts) {
               JSON.stringify({
                 action: "user-left",
                 user: currentUser,
-              })
+              }),
             );
           }
         }
@@ -268,7 +265,7 @@ export default async function (fastify, opts) {
           },
           {
             arrayFilters: [{ "issue.id": issueID }],
-          }
+          },
         );
 
         reply.code(201).send(result);
@@ -281,7 +278,7 @@ export default async function (fastify, opts) {
                 userID,
                 issueID,
                 estimation,
-              })
+              }),
             );
           }
         }
@@ -325,7 +322,7 @@ export default async function (fastify, opts) {
 
               return acc;
             },
-            []
+            [],
           );
 
           final_estimation = final_estimation_value;
@@ -340,31 +337,33 @@ export default async function (fastify, opts) {
             },
             {
               arrayFilters: [{ "issue.id": issueID }],
-            }
+            },
           );
 
           reply.code(201).send(result_estimation);
         } else {
-
           const totalEstimation = Object.keys(estimations).reduce(
             (acc, key) => {
               const numericKey = isNaN(Number(key)) ? 0 : Number(key);
               return acc + numericKey * estimations[key].length;
-            }, 0
+            },
+            0,
           );
-
 
           const totalItems = Object.values(estimations).reduce(
             (acc, estimation) => acc + estimation.length,
-            0
+            0,
           );
-
 
           const avg = Math.round(totalEstimation / totalItems);
 
-          const min = Math.min(...Object.keys(estimations).map(a => Number(a)));
+          const min = Math.min(
+            ...Object.keys(estimations).map((a) => Number(a)),
+          );
 
-          const max = Math.max(...Object.keys(estimations).map(a => Number(a)));
+          const max = Math.max(
+            ...Object.keys(estimations).map((a) => Number(a)),
+          );
 
           final_estimation = avg;
 
@@ -372,13 +371,13 @@ export default async function (fastify, opts) {
             { id: roomID },
             {
               $set: {
-                [`issues.$[issue].finalEstimation`]: final_estimation,
-                [`issues.$[issue].issueStatus`]: "Estimated",
+                ["issues.$[issue].finalEstimation"]: final_estimation,
+                ["issues.$[issue].issueStatus"]: "Estimated",
               },
             },
             {
               arrayFilters: [{ "issue.id": issueID }],
-            }
+            },
           );
 
           reply.code(201).send(result_estimation);
@@ -392,7 +391,7 @@ export default async function (fastify, opts) {
                 issueID,
                 issueStatus: "Estimated",
                 final_estimation,
-              })
+              }),
             );
           }
         }
@@ -422,7 +421,7 @@ export default async function (fastify, opts) {
                 isSpectator: user.isSpectator,
               },
             },
-          }
+          },
         );
 
         reply.code(201).send(result);
@@ -433,7 +432,7 @@ export default async function (fastify, opts) {
               JSON.stringify({
                 action: "user-joined",
                 user: user,
-              })
+              }),
             );
           }
         }
@@ -486,7 +485,7 @@ export default async function (fastify, opts) {
             issues: room.issues,
             selectedEstimationType: room.selectedEstimationType,
             estimationValues: room.estimationValues,
-          })
+          }),
         );
 
         connection.on("message", (message) => {
@@ -499,7 +498,7 @@ export default async function (fastify, opts) {
             if (roomSet) roomSet.delete(connection);
           }
         });
-      }
+      },
     );
   });
 }

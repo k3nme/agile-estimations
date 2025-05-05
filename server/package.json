@@ -24,6 +24,7 @@
 		"@fastify/rate-limit": "^9.1.0",
 		"@fastify/sensible": "^5.0.0",
 		"@fastify/websocket": "^10.0.1",
+		"agile.estimations.server": "file:",
 		"fastify": "^4.27.0",
 		"fastify-cli": "^6.1.1",
 		"fastify-mongodb": "^4.2.0",
