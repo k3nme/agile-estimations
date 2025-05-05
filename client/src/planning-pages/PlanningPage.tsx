@@ -11,6 +11,7 @@ import User from "../../../models/User";
 import IssuesComponent from "./issue-list/IssuesComponent";
 import { IssueStatus } from "../../../models/IssueStatus";
 import { useNavigate } from "react-router-dom";
+import environment from "../config";
 
 interface RevealedState {
   [key: string]: boolean;
@@ -54,7 +55,7 @@ const App = () => {
       roomSocket.current.readyState !== WebSocket.OPEN
     ) {
       const socket = new WebSocket(
-        `wss://planning-poker-gjur.onrender.com/connect-to-room/` + roomID,
+        `${environment.WSS_URL}/connect-to-room/${roomID}`,
       );
 
       socket.onopen = () => {

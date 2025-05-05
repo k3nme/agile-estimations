@@ -1,303 +1,369 @@
 import { motion } from "framer-motion";
 import Header from "../app/Header";
 import {
-	colors,
-	FormControl,
-	FormHelperText,
-	InputLabel,
-	MenuItem,
-	Select,
-	SelectChangeEvent,
-	Switch,
-	TextField,
+  colors,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Switch,
+  TextField,
 } from "@mui/material";
 import EstimationType from "../../../../models/EstimationType";
+import ActivityType from "../../../../models/ActivityType";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { updateSessionStorage } from "../../utilities/P3SessionStorage";
 import { generateID } from "../../utilities/HelperMethods";
 import { UserType } from "../../../../models/UserType";
 import User from "../../../../models/User";
+import environment from "../../config";
 
 const CreateRoom = () => {
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
-	const [roomName, setRoomName] = useState("");
-	const [userId, setUserId] = useState("");
-	const [selectedUserType, setSelectedUserType] =
-		useState<string>("None");
-	const [selectedEstimationType, setSelectedEstimationType] =
-		useState<string>("None");
-	const [selectedEstimationValues, setSelectedEstimationValues] = useState<
-		string[]
-	>([]);
-	const [customValues, setCustomValues] = useState("");
-	const [selectError, setSelectError] = useState("");
-	const [isCreateInProgress, setIsCreateInProgress] = useState(false);
-	const [roomNameError, setRoomNameError] = useState("");
-	const [userIdError, setUserIdError] = useState("");
-	const [customValuesError, setCustomValuesError] = useState("");
-	const [isSpectator, setIsSpectator] = useState(false);
-	  const handleSpectator = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setIsSpectator(event.target.checked);
-	  };
+  const [roomName, setRoomName] = useState("");
+  const [userId, setUserId] = useState("");
+  const [selectedActivity, setSelectedActivity] = useState<string>("None");
+  const [selectedEstimationType, setSelectedEstimationType] =
+    useState<string>("None");
+  const [selectedEstimationValues, setSelectedEstimationValues] = useState<
+    string[]
+  >([]);
+  const [customValues, setCustomValues] = useState("");
+  const [selectError, setSelectError] = useState("");
+  const [selectActivityError, setSelectActivityError] = useState("");
+  const [isCreateInProgress, setIsCreateInProgress] = useState(false);
+  const [roomNameError, setRoomNameError] = useState("");
+  const [userIdError, setUserIdError] = useState("");
+  const [customValuesError, setCustomValuesError] = useState("");
+  const [isSpectator, setIsSpectator] = useState(false);
+  const handleSpectator = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsSpectator(event.target.checked);
+  };
 
-	const validateForm = () => {
-		setRoomNameError(!roomName ? "Room Name is required" : "");
-		setUserIdError(!userId ? "User Id is required" : "");
-		setSelectError(
-			selectedEstimationType === "None" ? "Please select an option" : ""
-		);
+  const validateForm = () => {
+    setRoomNameError(!roomName ? "Room Name is required" : "");
+    setUserIdError(!userId ? "User Id is required" : "");
 
-		function validateString(input: string): boolean {
-			return /^[a-zA-Z0-9,]+$/.test(input);
-		}
+    setSelectActivityError(
+      selectedActivity === "None" ? "Please select an option" : "",
+    );
 
-		if (selectedEstimationType === "Custom") {
-			if (!customValues) {
-				setCustomValuesError("Custom Estimation Values are required");
-				return false;
-			} else if (customValues.split(",").length < 2) {
-				setCustomValuesError("At least two estimation values are required");
-				return false;
-			} else if (!validateString(customValues)) {
-				setCustomValuesError(
-					"Estimation values are invalid. Only numbers / values separated by commas are allowed."
-				);
-				return false;
-			} else {
-				setCustomValuesError("");
-			}
-		}
+    if (selectedActivity === "None") {
+      setSelectError(
+        selectedEstimationType === "None" ? "Please select an option" : "",
+      );
+      return false;
+    } else {
+      setSelectError("");
+    }
 
-		// Stop the flow if any error occurs
-		if (roomNameError || selectError || customValuesError) {
-			return false;
-		}
+    function validateString(input: string): boolean {
+      return /^[a-zA-Z0-9,]+$/.test(input);
+    }
 
-		return true;
-	};
+    if (selectedEstimationType === "Custom") {
+      if (!customValues) {
+        setCustomValuesError("Custom Estimation Values are required");
+        return false;
+      } else if (customValues.split(",").length < 2) {
+        setCustomValuesError("At least two estimation values are required");
+        return false;
+      } else if (!validateString(customValues)) {
+        setCustomValuesError(
+          "Estimation values are invalid. Only numbers / values separated by commas are allowed.",
+        );
+        return false;
+      } else {
+        setCustomValuesError("");
+      }
+    }
 
-	const createRoom = async () => {
-		if (roomName && selectedEstimationType && userId) {
-			updateSessionStorage("userEntryType", "create");
-			setIsCreateInProgress(true);
-			const currentUser: User = {
-				id: userId,
-				type: UserType.Facilitator,
-				isSpectator,
-			  };
-			try {
-				const roomID = generateID();
+    // Stop the flow if any error occurs
+    if (
+      roomNameError ||
+      selectError ||
+      selectActivityError ||
+      customValuesError
+    ) {
+      return false;
+    }
 
-				const response = await fetch("https://planning-poker-gjur.onrender.com/create-room", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						"Access-Control-Allow-Origin": "https://planning-poker-gjur.onrender.com/*",
-					},
-					body: JSON.stringify({
-						id: roomID,
-						name: roomName,
-						users: [currentUser],
-						issues: [],
-						selectedEstimationType: selectedEstimationType,
-						selectedEstimationValues:
-							selectedEstimationType !== "Custom"
-								? selectedEstimationValues
-								: customValues.split(",").map((value) => value.trim()),
-					}),
-				});
-				if (response.ok) {
-					navigate("/" + roomID, {
-						state: {
-							roomID: roomID,
-						},
-					});
-				} else {
-					console.log("Request failed with status:", response.status);
-				}
-			} catch (error) {
-				console.log("Request failed with error:", error);
-			}
-			setIsCreateInProgress(false);
-		}
-	};
+    return true;
+  };
 
-	const handleUserTypeChange = (event: SelectChangeEvent<string>) => {
-		// Clear error when the selection changes
-		setSelectError("");
+  const createRoom = async () => {
+    if (roomName && selectedEstimationType && userId) {
+      updateSessionStorage("userEntryType", "create");
+      setIsCreateInProgress(true);
+      const currentUser: User = {
+        id: userId,
+        type: UserType.Facilitator,
+        isSpectator,
+      };
+      try {
+        const roomID = generateID();
 
-		setSelectedUserType(event.target.value as string);
+        const response = await fetch(`${environment.API_URL}/create-room`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": `${environment.API_URL}/*`,
+          },
+          body: JSON.stringify({
+            id: roomID,
+            name: roomName,
+            users: [currentUser],
+            issues: [],
+            selectedEstimationType: selectedEstimationType,
+            selectedActivity: selectedActivity,
+            selectedEstimationValues:
+              selectedEstimationType !== "Custom"
+                ? selectedEstimationValues
+                : customValues.split(",").map((value) => value.trim()),
+          }),
+        });
+        if (response.ok) {
+          navigate("/" + roomID, {
+            state: {
+              roomID: roomID,
+            },
+          });
+        } else {
+          console.log("Request failed with status:", response.status);
+        }
+      } catch (error) {
+        console.log("Request failed with error:", error);
+      }
+      setIsCreateInProgress(false);
+    }
+  };
 
-	};
+  const handleSelectedActivityChange = (event: SelectChangeEvent<string>) => {
+    // Clear error when the selection changes
+    setSelectError("");
 
-	const handleEstimationTypeChange = (event: SelectChangeEvent<string>) => {
-		// Clear error when the selection changes
-		setSelectError("");
+    setSelectedActivity(event.target.value as string);
+  };
 
-		setSelectedEstimationType(event.target.value as string);
+  const handleEstimationTypeChange = (event: SelectChangeEvent<string>) => {
+    // Clear error when the selection changes
+    setSelectError("");
 
-		if (event.target.value !== "Custom") {
-			setSelectedEstimationValues(
-				EstimationType._estimationTypes.find(
-					(estimationType) => estimationType.name === event.target.value
-				)?.sizes || []
-			);
-		}
-	};
+    setSelectedEstimationType(event.target.value as string);
 
-	const handleEstimationValuesChange = (
-		event: React.ChangeEvent<HTMLInputElement>
-	) => {
-		setCustomValues(event.target.value);
-	};
+    if (event.target.value !== "Custom") {
+      setSelectedEstimationValues(
+        EstimationType._estimationTypes.find(
+          (estimationType) => estimationType.name === event.target.value,
+        )?.sizes || [],
+      );
+    }
+  };
 
-	return (
-		<div className='flex flex-col min-h-screen bg-gray-100'>
-			<Header />
-			<div className='flex flex-grow flex-col lg:flex-row items-center justify-center p-4'>
-				{/* Left Content (Steps to Take) */}
-				<div className='lg:mr-12 max-w-xs mb-6 lg:mb-0 drop-shadow'>
-					<h2 className='text-2xl font-bold mb-4'>Steps to Take:</h2>
-					<ul className='list-disc list-inside'>
-						<li className='mb-2'>Enter a unique Room Name.</li>
-						<li className='mb-2'>Enter a unique User Id.</li>
-						<li className='mb-2'>Select User Type.</li>
-						<li className='mb-2'>Select an Estimation Type.</li>
-						<li className='mb-2'>
-							Optionally, provide Custom Estimation Values.
-						</li>
-						<li className='mb-2'>Click on "Create Room" to proceed.</li>
-					</ul>
-				</div>
-				{/* Right Content (Form) */}
-				<motion.div
-					initial={{ opacity: 0, x: 50 }}
-					animate={{ opacity: 1, x: 0 }}
-					transition={{ duration: 0.5 }}
-					className='bg-white rounded-lg shadow-lg p-6 w-full max-w-md'
-				>
-					<h1 className='text-3xl font-bold mb-6 text-center'>Create Room</h1>
+  const handleEstimationValuesChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setCustomValues(event.target.value);
+  };
 
-					<TextField
-						error={!!roomNameError}
-						label='Room Name'
-						required
-						fullWidth
-						margin='dense'
-						disabled={isCreateInProgress}
-						onChange={(e) => setRoomName(e.target.value)}
-						value={roomName}
-						helperText={roomNameError}
-						className='mt-4'
-						variant='outlined'
-					/>
+  return (
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      <Header />
+      <div className="flex flex-grow flex-col lg:flex-row items-center justify-center p-4">
+        {/* Left Content (Steps to Take) */}
+        <div className="lg:mr-12 max-w-xs mb-6 lg:mb-0 drop-shadow">
+          <h2 className="text-2xl font-bold mb-4">Steps to Take:</h2>
+          <ul className="list-disc list-inside">
+            <li className="mb-2">Enter a unique Room Name.</li>
+            <li className="mb-2">Enter a unique User Id.</li>
+            <li className="mb-2">Select the activity inside the room.</li>
+            <li className="mb-2">
+              If the selected activity is estimation, select the estimation
+              type.
+            </li>
+            <li className="mb-2">Click on "Create Room" to proceed.</li>
+          </ul>
+        </div>
+        {/* Right Content (Form) */}
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+          className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md"
+        >
+          <h1 className="text-3xl font-bold mb-6 text-center">Create Room</h1>
 
-					<TextField
-						error={!!roomNameError}
-						label='User ID'
-						required
-						fullWidth
-						margin='dense'
-						disabled={isCreateInProgress}
-						onChange={(e) => setUserId(e.target.value)}
-						value={userId}
-						helperText={userIdError}
-						className='mt-4'
-						variant='outlined'
-					/>
+          <TextField
+            error={!!roomNameError}
+            label="Room Name"
+            required
+            fullWidth
+            margin="dense"
+            disabled={isCreateInProgress}
+            onChange={(e) => setRoomName(e.target.value)}
+            value={roomName}
+            helperText={roomNameError}
+            className="mt-4"
+            variant="outlined"
+          />
 
-					
+          <TextField
+            error={!!roomNameError}
+            label="User ID"
+            required
+            fullWidth
+            margin="dense"
+            disabled={isCreateInProgress}
+            onChange={(e) => setUserId(e.target.value)}
+            value={userId}
+            helperText={userIdError}
+            className="mt-4"
+            variant="outlined"
+          />
 
-					<FormControl
-						error={!!selectError}
-						fullWidth
-						disabled={isCreateInProgress}
-						margin='dense'
-						className='mt-6'
-					>
-						<InputLabel id='select-estimation-label' margin='dense'>
-							Select Estimation Type
-						</InputLabel>
-						<Select
-							labelId='select-estimation-label'
-							id='select-estimation'
-							value={selectedEstimationType}
-							onChange={handleEstimationTypeChange}
-							label='Select Estimation Type'
-							margin='dense'
-							required
-							disabled={isCreateInProgress}
-							fullWidth
-							variant='outlined'
-						>
-							<MenuItem value={"None"} disabled>
-								Select Estimation Type
-							</MenuItem>
-							{EstimationType._estimationTypes.map((estimationType) => (
-								<MenuItem key={estimationType.id} value={estimationType.name}>
-									{estimationType.display}
-								</MenuItem>
-							))}
-						</Select>
-						{selectError && <FormHelperText>{selectError}</FormHelperText>}
-					</FormControl>
+          <FormControl
+            error={!!selectError}
+            fullWidth
+            disabled={isCreateInProgress}
+            margin="dense"
+            className="mt-6"
+          >
+            <InputLabel id="select-activity-label" margin="dense">
+              Select Activity
+            </InputLabel>
+            <Select
+              labelId="select-activity-label"
+              id="select-activity"
+              value={selectedActivity}
+              onChange={handleSelectedActivityChange}
+              label="Select Activity"
+              margin="dense"
+              required
+              disabled={isCreateInProgress}
+              fullWidth
+              variant="outlined"
+            >
+              <MenuItem value={"None"} disabled>
+                Select Activity
+              </MenuItem>
+              {ActivityType._activityTypes.map((activityType) => (
+                <MenuItem
+                  key={activityType.id}
+                  value={activityType.name}
+                  disabled={activityType.disabled}
+                >
+                  {activityType.name}
+                </MenuItem>
+              ))}
+            </Select>
+            {selectError && <FormHelperText>{selectError}</FormHelperText>}
+          </FormControl>
 
-					{selectedEstimationType === "Custom" && (
-						<TextField
-							error={!!customValuesError}
-							label='Custom Estimation Values (comma-separated)'
-							value={customValues}
-							required
-							onChange={handleEstimationValuesChange}
-							margin='dense'
-							disabled={isCreateInProgress}
-							helperText={customValuesError}
-							fullWidth
-							variant='outlined'
-							className='mt-6'
-						/>
-					)}
-			<div className='flex justify-between items-center px-2 py-2 w-full sm:w-auto'>
-				<p>Join as spectator</p>
-				<div>
-				<Switch
-					checked={isSpectator}
-					onChange={handleSpectator}
-					sx={{
-					"& .MuiSwitch-switchBase.Mui-checked": {
-						color: colors.blue[900],
-					},
-					"& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-						backgroundColor: colors.blue[900],
-					},
-					}}
-				/>
-				
-				</div>
-			</div>
-					<motion.button
-						type='button'
-						whileHover={{ scale: 1.05 }}
-						whileTap={{ scale: 0.9 }}
-						transition={{ type: "tween", stiffness: 100 }}
-						className='text-white bg-indigo-600 hover:bg-indigo-700 mt-6 py-2 px-4 rounded w-full shadow'
-						onClick={() => {
-							if (validateForm()) {
-								createRoom();
-							}
-						}}
-						style={{
-							opacity: isCreateInProgress ? "0.7" : "1",
-						}}
-					>
-						{isCreateInProgress? "Creating.." : "Create Room"}
-					</motion.button>
-				</motion.div>
-			</div>
-		</div>
-	);
+          {
+            /* Only show this select if the selected activity is estimation */
+            selectedActivity === "Estimation" && (
+              <FormControl
+                error={!!selectError}
+                fullWidth
+                disabled={isCreateInProgress}
+                margin="dense"
+                className="mt-6"
+              >
+                <InputLabel id="select-estimation-label" margin="dense">
+                  Select Estimation Type
+                </InputLabel>
+                <Select
+                  labelId="select-estimation-label"
+                  id="select-estimation"
+                  value={selectedEstimationType}
+                  onChange={handleEstimationTypeChange}
+                  label="Select Estimation Type"
+                  margin="dense"
+                  required
+                  disabled={isCreateInProgress}
+                  fullWidth
+                  variant="outlined"
+                >
+                  <MenuItem value={"None"} disabled>
+                    Select Estimation Type
+                  </MenuItem>
+                  {EstimationType._estimationTypes.map((estimationType) => (
+                    <MenuItem
+                      key={estimationType.id}
+                      value={estimationType.name}
+                    >
+                      {estimationType.display}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {selectError && <FormHelperText>{selectError}</FormHelperText>}
+              </FormControl>
+            )
+          }
+
+          {selectedEstimationType === "Custom" && (
+            <TextField
+              error={!!customValuesError}
+              label="Custom Estimation Values (comma-separated)"
+              value={customValues}
+              required
+              onChange={handleEstimationValuesChange}
+              margin="dense"
+              disabled={isCreateInProgress}
+              helperText={customValuesError}
+              fullWidth
+              variant="outlined"
+              className="mt-6"
+            />
+          )}
+          {
+            /* Only show this select if the selected activity is estimation */
+            selectedActivity === "Estimation" && (
+              <div className="flex justify-between items-center px-2 py-2 w-full sm:w-auto">
+                <p>Join as spectator</p>
+                <div>
+                  <Switch
+                    checked={isSpectator}
+                    onChange={handleSpectator}
+                    sx={{
+                      "& .MuiSwitch-switchBase.Mui-checked": {
+                        color: colors.blue[900],
+                      },
+                      "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
+                        {
+                          backgroundColor: colors.blue[900],
+                        },
+                    }}
+                  />
+                </div>
+              </div>
+            )
+          }
+          <motion.button
+            type="button"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ type: "tween", stiffness: 100 }}
+            className="text-white bg-indigo-600 hover:bg-indigo-700 mt-6 py-2 px-4 rounded w-full shadow"
+            onClick={() => {
+              if (validateForm()) {
+                createRoom();
+              }
+            }}
+            style={{
+              opacity: isCreateInProgress ? "0.7" : "1",
+            }}
+          >
+            {isCreateInProgress ? "Creating.." : "Create Room"}
+          </motion.button>
+        </motion.div>
+      </div>
+    </div>
+  );
 };
 
 export default CreateRoom;

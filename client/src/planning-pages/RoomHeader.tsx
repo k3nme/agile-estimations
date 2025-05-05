@@ -25,6 +25,8 @@ import Issue from "../../../models/Issue";
 import { motion } from "framer-motion";
 import Logo from "../logo/Logo";
 
+import environment from "../config";
+
 interface Props {
   roomID: string;
   roomTitle: string;
@@ -89,17 +91,20 @@ const RoomHeader = ({
 
   const deleteUserFromRoom = async (user: User | undefined) => {
     try {
-      const response = await fetch("https://planning-poker-gjur.onrender.com/remove-user-from-room", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "https://planning-poker-gjur.onrender.com/*",
+      const response = await fetch(
+        `${environment.API_URL}/remove-user-from-room`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": `${environment.API_URL}/*`,
+          },
+          body: JSON.stringify({
+            roomID,
+            user: user ? user : currentUser,
+          }),
         },
-        body: JSON.stringify({
-          roomID,
-          user: user ? user : currentUser,
-        }),
-      });
+      );
       if (response.ok) {
         // Not doing anything with the response. The user will be removed from the room and the page will be reloaded.
       } else {
@@ -157,81 +162,81 @@ const RoomHeader = ({
   };
 
   return (
-    <div className='logo flex flex-row w-full h-20 justify-center'>
-      <div className='absolute top-0 left-0 w-20 md:w-28 md:h-18 m-4'>
-        <Link to='#'>
+    <div className="logo flex flex-row w-full h-20 justify-center">
+      <div className="absolute top-0 left-0 w-20 md:w-28 md:h-18 m-4">
+        <Link to="#">
           <Logo />
         </Link>
       </div>
 
       {roomTitle && (
-        <div className='text-indigo-700 text-xl absolute text-center w-40 h-18 m-4 font-bold justify-center items-center'>
+        <div className="text-indigo-700 text-xl absolute text-center w-40 h-18 m-4 font-bold justify-center items-center">
           {roomTitle}
         </div>
       )}
 
-      <div className=''>
-        <div className='absolute top-0 right-5 flex m-2'>
-          <div className='md:hidden text-indigo-600 hover:text-indigo-700 drop-shadow'>
+      <div className="">
+        <div className="absolute top-0 right-5 flex m-2">
+          <div className="md:hidden text-indigo-600 hover:text-indigo-700 drop-shadow">
             <IconButton
-              edge='start'
-              color='inherit'
-              aria-label='menu'
+              edge="start"
+              color="inherit"
+              aria-label="menu"
               onClick={handleMenuOpen}
             >
               <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
                 strokeWidth={1.5}
-                stroke='currentColor'
-                className='size-6'
+                stroke="currentColor"
+                className="size-6"
               >
                 <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5'
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5"
                 />
               </svg>
             </IconButton>
           </div>
 
-          <div className='hidden md:flex flex-row justify-between gap-6 py-4'>
+          <div className="hidden md:flex flex-row justify-between gap-6 py-4">
             <motion.span
               whileHover={{
                 borderBottom: "1px solid #4f46e5",
               }}
-              className='relative cursor-pointer text-indigo-600 hover:text-indigo-700 drop-shadow font-medium '
+              className="relative cursor-pointer text-indigo-600 hover:text-indigo-700 drop-shadow font-medium "
               onClick={handleClickOpen}
             >
               Invite
             </motion.span>
 
-            <span className='text-indigo-600 hover:text-indigo-700'>|</span>
+            <span className="text-indigo-600 hover:text-indigo-700">|</span>
 
             <motion.span
               whileHover={{
                 borderBottom: "1px solid #4f46e5",
               }}
-              className='relative cursor-pointer text-indigo-600 hover:text-indigo-700 font-medium drop-shadow'
+              className="relative cursor-pointer text-indigo-600 hover:text-indigo-700 font-medium drop-shadow"
               onClick={handleUserInformationDialogOpen}
             >
               Members({users.length})
             </motion.span>
 
-            <span className='text-indigo-600 hover:text-indigo-700'>|</span>
+            <span className="text-indigo-600 hover:text-indigo-700">|</span>
 
             <motion.span
               whileHover={{
                 borderBottom: "1px solid #4f46e5",
               }}
-              className='relative cursor-pointer text-indigo-600 hover:text-indigo-700 font-medium drop-shadow'
+              className="relative cursor-pointer text-indigo-600 hover:text-indigo-700 font-medium drop-shadow"
               onClick={onIssueListClick}
             >
               Issues({issues.length})
             </motion.span>
 
-            <span className='text-indigo-600 hover:text-indigo-700'>|</span>
+            <span className="text-indigo-600 hover:text-indigo-700">|</span>
 
             {currentUser && (
               <>
@@ -239,7 +244,7 @@ const RoomHeader = ({
                   whileHover={{
                     borderBottom: "1px solid #4f46e5",
                   }}
-                  className=' text-indigo-600 cursor-pointer hover:text-indigo-700 font-medium drop-shadow'
+                  className=" text-indigo-600 cursor-pointer hover:text-indigo-700 font-medium drop-shadow"
                   onClick={handleUserMenuOpen}
                 >
                   {currentUser.type == UserType.Facilitator.toString() ? (
@@ -256,10 +261,10 @@ const RoomHeader = ({
                 >
                   <MenuItem onClick={handleUserMenuClose}>
                     <motion.button
-                      type='button'
+                      type="button"
                       whileHover={{ fontWeight: "bold" }}
-                      className='self-center text-indigo-600 hover:text-indigo-700 font-medium  rounded '
-                      onClick = {() => {
+                      className="self-center text-indigo-600 hover:text-indigo-700 font-medium  rounded "
+                      onClick={() => {
                         handleExitRoom(currentUser);
                       }}
                     >
@@ -300,7 +305,7 @@ const RoomHeader = ({
               handleUserInformationDialogOpen();
             }}
           >
-            <p className='text-indigo-600 hover:text-indigo-700 drop-shadow'>
+            <p className="text-indigo-600 hover:text-indigo-700 drop-shadow">
               Members({users.length})
             </p>
           </MenuItem>
@@ -310,18 +315,18 @@ const RoomHeader = ({
               onIssueListClick();
             }}
           >
-            <p className='text-indigo-600 hover:text-indigo-700 drop-shadow'>
+            <p className="text-indigo-600 hover:text-indigo-700 drop-shadow">
               Issues({issues.length})
             </p>
           </MenuItem>
           {currentUser && (
             <MenuItem onClick={handleMenuClose}>
               {currentUser.type == UserType.Facilitator.toString() ? (
-                <SupervisorAccount className='text-indigo-600 hover:text-indigo-700 drop-shadow' />
+                <SupervisorAccount className="text-indigo-600 hover:text-indigo-700 drop-shadow" />
               ) : (
-                <Person className='text-indigo-600 hover:text-indigo-700 drop-shadow' />
+                <Person className="text-indigo-600 hover:text-indigo-700 drop-shadow" />
               )}
-              <p className='text-indigo-600 hover:text-indigo-700 drop-shadow'>
+              <p className="text-indigo-600 hover:text-indigo-700 drop-shadow">
                 {currentUser.id}
               </p>
             </MenuItem>
@@ -332,7 +337,7 @@ const RoomHeader = ({
               handleClickOpen();
             }}
           >
-            <p className='text-indigo-600 hover:text-indigo-700 drop-shadow'>
+            <p className="text-indigo-600 hover:text-indigo-700 drop-shadow">
               Invite
             </p>
           </MenuItem>
@@ -342,8 +347,8 @@ const RoomHeader = ({
               handleExitRoom(currentUser);
             }}
           >
-            <ExitToApp className='text-indigo-600 hover:text-indigo-700 drop-shadow' />
-            <p className='text-indigo-600 hover:text-indigo-700 drop-shadow'>
+            <ExitToApp className="text-indigo-600 hover:text-indigo-700 drop-shadow" />
+            <p className="text-indigo-600 hover:text-indigo-700 drop-shadow">
               Exit
             </p>
           </MenuItem>
@@ -354,15 +359,15 @@ const RoomHeader = ({
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle textAlign={"center"}>{"Invite Members"}</DialogTitle>
           <DialogContent>
-            <div className='flex justify-center rounded-md px-4 mt-4 py-2'>
+            <div className="flex justify-center rounded-md px-4 mt-4 py-2">
               <TextField
-                label='Room Link'
-                id='roomLink'
+                label="Room Link"
+                id="roomLink"
                 fullWidth
-                margin='dense'
+                margin="dense"
                 required
                 disabled
-                variant='outlined'
+                variant="outlined"
                 value={window.location.href}
               />
             </div>
@@ -370,23 +375,23 @@ const RoomHeader = ({
 
           <DialogActions>
             <Stack
-              direction='column'
-              alignItems='center'
+              direction="column"
+              alignItems="center"
               sx={{ width: "100%", alignItems: "center" }}
             >
               <button
-                title='Copy Link'
-                type='button'
-                className='w-60 bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-2 rounded '
+                title="Copy Link"
+                type="button"
+                className="w-60 bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-2 rounded "
                 onClick={copyLink}
               >
                 Copy Link
               </button>
 
               <button
-                title='Copy Code'
-                type='button'
-                className='w-60 bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-2 m-2 rounded'
+                title="Copy Code"
+                type="button"
+                className="w-60 bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-2 m-2 rounded"
                 onClick={copyCode}
               >
                 Copy Code
@@ -403,11 +408,11 @@ const RoomHeader = ({
         >
           <DialogTitle textAlign={"center"}>{"Members"}</DialogTitle>
           <DialogContent>
-            <div className='flex justify-center rounded-md px-4 py-2 text-center'>
-              <div className='grid grid-cols-3 gap-4'>
-                <div className='font-bold'>Name</div>
-                <div className='font-bold'>Type</div>
-                <div className='font-bold'>Spectator?</div>
+            <div className="flex justify-center rounded-md px-4 py-2 text-center">
+              <div className="grid grid-cols-3 gap-4">
+                <div className="font-bold">Name</div>
+                <div className="font-bold">Type</div>
+                <div className="font-bold">Spectator?</div>
                 {users.map((user, index) => (
                   <React.Fragment key={index}>
                     <div>{user.id}</div>
@@ -415,16 +420,16 @@ const RoomHeader = ({
                     <div>{user.isSpectator ? "Yes" : "No"}</div>
                     {user.type === UserType.Facilitator.toString() && (
                       <MenuItem
-                      onClick={() => {
-                        handleMenuClose();
-                        handleExitRoom(user);
-                      }}
-                    >
-                      <ExitToApp className='text-indigo-600 hover:text-indigo-700 drop-shadow' />
-                      <p className='text-indigo-600 hover:text-indigo-700 drop-shadow'>
-                        x
-                      </p>
-                    </MenuItem>
+                        onClick={() => {
+                          handleMenuClose();
+                          handleExitRoom(user);
+                        }}
+                      >
+                        <ExitToApp className="text-indigo-600 hover:text-indigo-700 drop-shadow" />
+                        <p className="text-indigo-600 hover:text-indigo-700 drop-shadow">
+                          x
+                        </p>
+                      </MenuItem>
                     )}
                   </React.Fragment>
                 ))}
@@ -434,14 +439,14 @@ const RoomHeader = ({
 
           <DialogActions>
             <Stack
-              direction='column'
-              alignItems='center'
+              direction="column"
+              alignItems="center"
               sx={{ width: "100%", alignItems: "center" }}
             >
               <button
-                title='Copy Link'
-                type='button'
-                className='bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-2 rounded w-60'
+                title="Copy Link"
+                type="button"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-2 rounded w-60"
                 onClick={handleUserInformationDialogClose}
               >
                 Close

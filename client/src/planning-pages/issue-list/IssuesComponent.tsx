@@ -8,6 +8,8 @@ import { AddCircle, Close } from "@mui/icons-material";
 import User from "../../../../models/User";
 import { IssueStatus } from "../../../../models/IssueStatus";
 
+import environment from "../../config";
+
 const IssuesComponent = (props: {
   roomID: string | undefined;
   issues: Issue[];
@@ -35,7 +37,7 @@ const IssuesComponent = (props: {
   const validateAddIssue = () => {
     setIssueTitleError(!newIssueTitle ? "Issue Title is required" : "");
     setIssueDescriptionError(
-      !newIssueDescription ? "Description is required" : ""
+      !newIssueDescription ? "Description is required" : "",
     );
   };
 
@@ -62,7 +64,6 @@ const IssuesComponent = (props: {
       newIssueTitle.trim() &&
       newIssueDescription.trim()
     ) {
-
       try {
         const newIssue: Issue = {
           id: generateRandomIssueId(),
@@ -73,22 +74,25 @@ const IssuesComponent = (props: {
           estimations: {},
         };
 
-        const response = await fetch("https://planning-poker-gjur.onrender.com/add-issue-to-room", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "https://planning-poker-gjur.onrender.com/*",
+        const response = await fetch(
+          `${environment.API_URL}/add-issue-to-room`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": `${environment.API_URL}/*`,
+            },
+            body: JSON.stringify({
+              roomID,
+              id: newIssue.id,
+              title: newIssue.title,
+              description: newIssue.description,
+              finalEstimation: newIssue.finalEstimation,
+              issueStatus: newIssue.issueStatus,
+              estimations: newIssue.estimations,
+            }),
           },
-          body: JSON.stringify({
-            roomID,
-            id: newIssue.id,
-            title: newIssue.title,
-            description: newIssue.description,
-            finalEstimation: newIssue.finalEstimation,
-            issueStatus: newIssue.issueStatus,
-            estimations: newIssue.estimations,
-          }),
-        });
+        );
         if (response.ok) {
           setShowAddIssue(false);
           setNewIssueTitle("");
@@ -104,16 +108,16 @@ const IssuesComponent = (props: {
 
   return (
     <div className={`m-4`} ref={issuesDivRef}>
-      <IconButton className='float-right' onClick={handleCloseIssueList}>
+      <IconButton className="float-right" onClick={handleCloseIssueList}>
         <Close />
       </IconButton>
-      <div className='main-issues-container p-4 rounded-lg lg:rounded-none'>
+      <div className="main-issues-container p-4 rounded-lg lg:rounded-none">
         {/* Close Icon for Issue Container */}
 
         {currentUser &&
           currentUser.type === UserType.Facilitator.toString() && (
             <motion.div
-              className='p-4'
+              className="p-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
@@ -122,13 +126,13 @@ const IssuesComponent = (props: {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
-                className='flex gap-4'
+                className="flex gap-4"
               >
                 <motion.button
-                  type='button'
+                  type="button"
                   whileHover={{ scale: 1.05 }}
                   onClick={handleShowAddIssue}
-                  className='px-4 py-2 rounded-md w-full mb-2 text-white bg-indigo-600 hover:bg-indigo-700'
+                  className="px-4 py-2 rounded-md w-full mb-2 text-white bg-indigo-600 hover:bg-indigo-700"
                 >
                   <AddCircle /> Add Issue
                 </motion.button>
@@ -139,13 +143,13 @@ const IssuesComponent = (props: {
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <Stack direction='column' alignItems='center'>
+                  <Stack direction="column" alignItems="center">
                     <TextField
                       error={!!issueTitleError}
-                      label='Title'
+                      label="Title"
                       required
                       fullWidth
-                      margin='dense'
+                      margin="dense"
                       inputProps={{ maxLength: 10 }}
                       onChange={(e) => setNewIssueTitle(e.target.value)}
                       value={newIssueTitle}
@@ -153,9 +157,9 @@ const IssuesComponent = (props: {
                     />
                     <TextField
                       error={!!issueDescriptionError}
-                      label='Link/Description'
+                      label="Link/Description"
                       multiline
-                      margin='dense'
+                      margin="dense"
                       fullWidth
                       required
                       onChange={(e) => setNewIssueDescription(e.target.value)}
@@ -163,11 +167,11 @@ const IssuesComponent = (props: {
                       helperText={issueDescriptionError}
                     />
                   </Stack>
-                  <div className='flex flex-col justify-between'>
+                  <div className="flex flex-col justify-between">
                     <motion.button
-                      type='button'
+                      type="button"
                       whileHover={{ scale: 1.1 }}
-                      className=' text-white py-2 px-4 m-2 rounded w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700'
+                      className=" text-white py-2 px-4 m-2 rounded w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700"
                       onClick={() => {
                         validateAddIssue();
                         addIssueToRoom(roomID);
@@ -176,9 +180,9 @@ const IssuesComponent = (props: {
                       Save
                     </motion.button>
                     <motion.button
-                      type='button'
+                      type="button"
                       whileHover={{ scale: 1.1 }}
-                      className=' text-white py-2 px-4 m-2 rounded w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700'
+                      className=" text-white py-2 px-4 m-2 rounded w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700"
                       onClick={handleCancelAddIssue}
                     >
                       Cancel

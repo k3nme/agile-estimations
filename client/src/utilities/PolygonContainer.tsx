@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import User from ".../../../../models/User";
 import UserCard from "./UserCard";
+import environment from "../config";
 import "../sass/WoodenTable.sass";
 import Issue from "../../../models/Issue";
 
@@ -61,7 +62,7 @@ const UserPolygon = ({
               left: `${xPercent}%`,
               top: `${yPercent}%`,
             };
-          })
+          }),
         );
       }
     };
@@ -77,7 +78,7 @@ const UserPolygon = ({
     return (
       issue.estimations &&
       Object.values(issue.estimations).some((userIds) =>
-        userIds.includes(user.id)
+        userIds.includes(user.id),
       )
     );
   };
@@ -99,18 +100,21 @@ const UserPolygon = ({
   // Method to request revealing of votes
   const askForReveal = async () => {
     try {
-      const response = await fetch("https://planning-poker-gjur.onrender.com/update-final-estimation", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "https://planning-poker-gjur.onrender.com/*",
+      const response = await fetch(
+        `${environment.API_URL}/update-final-estimation`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": `${environment.API_URL}/*`,
+          },
+          body: JSON.stringify({
+            roomID: roomID,
+            selectedEstimationType: selectedEstimationType,
+            issueID: selectedIssue.id,
+          }),
         },
-        body: JSON.stringify({
-          roomID: roomID,
-          selectedEstimationType: selectedEstimationType,
-          issueID: selectedIssue.id,
-        }),
-      });
+      );
       if (response.ok) {
         console.log("Estimation reveal successful!");
       } else {
@@ -123,55 +127,55 @@ const UserPolygon = ({
 
   return (
     <div
-      className='polygon-div col-span-6 shadow flex rounded relative w-full h-full'
+      className="polygon-div col-span-6 shadow flex rounded relative w-full h-full"
       ref={polygonDivRef}
     >
       <svg
-        className='svg-container top-0 left-0 w-full h-full'
+        className="svg-container top-0 left-0 w-full h-full"
         viewBox={`0 0 ${center.x * 2} ${center.y * 2}`}
-        preserveAspectRatio='xMidYMid meet'
+        preserveAspectRatio="xMidYMid meet"
       >
         <defs>
-          <linearGradient id='woodGradient' x1='0%' y1='0%' x2='100%' y2='100%'>
-            <stop offset='0%' stopColor='#5a67d8' />
-            <stop offset='100%' stopColor='#4c51bf' />
+          <linearGradient id="woodGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#5a67d8" />
+            <stop offset="100%" stopColor="#4c51bf" />
           </linearGradient>
           <pattern
-            id='woodenTablePattern'
-            patternUnits='userSpaceOnUse'
-            width='3'
-            height='3'
+            id="woodenTablePattern"
+            patternUnits="userSpaceOnUse"
+            width="3"
+            height="3"
           >
-            <rect width='30' height='30' fill='url(#woodGradient)' />
+            <rect width="30" height="30" fill="url(#woodGradient)" />
           </pattern>
         </defs>
         {/* Draw the outer circle */}
         <circle
-          className='circle shadow-orange-950'
+          className="circle shadow-orange-950"
           cx={center.x}
           cy={center.y}
           r={radius}
-          fill='transparent'
-          stroke='transparent'
+          fill="transparent"
+          stroke="transparent"
         />
         {/* Draw the inner circle */}
         <circle
-          className='circle shadow-orange-950'
+          className="circle shadow-orange-950"
           cx={center.x}
           cy={center.y}
           r={innerRadius}
-          fill='url(#woodenTablePattern)'
-          stroke='black'
+          fill="url(#woodenTablePattern)"
+          stroke="black"
         ></circle>
 
         <text
           x={center.x}
           y={center.y - 50}
-          textAnchor='middle'
-          fontSize='24'
-          fontWeight='bold'
-          fill='#fff'
-          className='text-2xl p-2 truncate drop-shadow w-20'
+          textAnchor="middle"
+          fontSize="24"
+          fontWeight="bold"
+          fill="#fff"
+          className="text-2xl p-2 truncate drop-shadow w-20"
         >
           {selectedIssue && selectedIssue.title ? selectedIssue.title : "Title"}
         </text>
@@ -179,10 +183,10 @@ const UserPolygon = ({
         <text
           x={center.x}
           y={center.y - 10}
-          textAnchor='middle'
-          fontSize='18'
-          fill='#fff'
-          className='text-lg truncate drop-shadow w-20'
+          textAnchor="middle"
+          fontSize="18"
+          fill="#fff"
+          className="text-lg truncate drop-shadow w-20"
         >
           {selectedIssue && selectedIssue.description ? (
             <tspan>{selectedIssue.description}</tspan>
@@ -195,16 +199,16 @@ const UserPolygon = ({
         {!reveal ? (
           currentUser?.type === "Facilitator" && (
             <foreignObject
-              className='text-center'
+              className="text-center"
               x={center.x - 50}
               y={center.y + 20}
-              width='100'
-              height='60'
+              width="100"
+              height="60"
             >
               <button
-                title='Reveal Votes'
-                type='button'
-                className='reveal-button bg-white p-2 rounded text-blue-800 font-bold w-full h-full shadow-lg'
+                title="Reveal Votes"
+                type="button"
+                className="reveal-button bg-white p-2 rounded text-blue-800 font-bold w-full h-full shadow-lg"
                 onClick={askForReveal}
               >
                 Reveal
@@ -216,12 +220,12 @@ const UserPolygon = ({
           <foreignObject
             x={center.x - 75}
             y={center.y + 20}
-            className='text-center'
-            width='160'
-            height='60'
+            className="text-center"
+            width="160"
+            height="60"
           >
-            <div className='final-result bg-white p-4 rounded shadow-lg w-full h-full'>
-              <p className='font-bold'>
+            <div className="final-result bg-white p-4 rounded shadow-lg w-full h-full">
+              <p className="font-bold">
                 Estimation - {selectedIssue?.finalEstimation}
               </p>
               {/* Add additional final estimation details here */}
@@ -235,7 +239,7 @@ const UserPolygon = ({
       {userPositions.map(({ index, left, top }) => (
         <div
           key={index}
-          className='text-center absolute z-10'
+          className="text-center absolute z-10"
           style={{
             left: left,
             top: top,
@@ -250,7 +254,7 @@ const UserPolygon = ({
             selectedIssue={selectedIssue}
             isEstimationPresent={isUserEstimationPresent(
               users[index],
-              selectedIssue
+              selectedIssue,
             )}
             estimation={userEstimation(users[index], selectedIssue)}
           />
