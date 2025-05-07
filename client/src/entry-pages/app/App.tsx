@@ -57,7 +57,6 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/create-room" element={<CreateRoom />} />
             <Route path="/join-room" element={<JoinRoom />} />
-            <Route path="/history" element={<RoomHistory />} />
             <Route path="/:roomID" element={<PlanningPage />} />
           </Routes>
         </Router>

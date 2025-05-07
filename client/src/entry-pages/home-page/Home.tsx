@@ -2,9 +2,6 @@ import { Link } from "react-router-dom";
 import Header from "../app/Header";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import img1 from "../../assets/img1.webp";
-import img2 from "../../assets/img2.webp";
-import img3 from "../../assets/img3.webp";
 import usePageVisibility from "../../utilities/usePageVisibility";
 
 const sections = [
@@ -12,20 +9,7 @@ const sections = [
     heading: "Welcome to Agile Estimations",
     description: "No signup required, No limit on users, No licenses.",
     subDescription:
-      "Effortlessly manage your scrum planning sessions with your team.",
-    image: img1,
-  },
-  {
-    heading: "Streamline Your Planning Process",
-    description: "Collaborate with your team in real-time.",
-    subDescription: "Easy to use interface and powerful features.",
-    image: img2,
-  },
-  {
-    heading: "Boost Team Productivity",
-    description: "Engage your team with interactive planning sessions.",
-    subDescription: "Make planning efficient and fun.",
-    image: img3,
+      "Effortlessly manage your scrum activities / planning sessions with your team",
   },
 ];
 
@@ -60,16 +44,14 @@ const Home = () => {
             <AnimatePresence initial={false} presenceAffectsLayout>
               <motion.div
                 key={currentSection}
-                className="absolute top-0 left-0 w-full h-full flex items-center justify-center"
+                className="absolute w-full h-full flex items-center justify-center"
                 initial={{ opacity: 0, x: "100%" }}
                 animate={isVisible ? { opacity: 1, x: 0 } : {}}
                 exit={{ opacity: 0, x: "-100%" }}
                 transition={{ duration: 0.5 }}
               >
-                <div
-                  className={`flex flex-col lg:flex-row items-center w-full ${"lg:flex-row"}`}
-                >
-                  <div className="text-center lg:text-left lg:w-2/5 px-4">
+                <div className={"flex flex-col  items-center w-full"}>
+                  <div className="text-center px-4">
                     <motion.h1
                       className="text-3xl drop-shadow font-extrabold text-gray-900 dark:text-white sm:text-4xl md:text-5xl"
                       initial="hidden"
@@ -80,7 +62,7 @@ const Home = () => {
                       {Array.from(sections[currentSection].heading).map(
                         (char, index) => (
                           <motion.span
-                            key={char}
+                            key={char.concat(index.toString())}
                             custom={index}
                             variants={typingVariants}
                             initial="hidden"
@@ -102,7 +84,7 @@ const Home = () => {
                       {Array.from(sections[currentSection].description).map(
                         (char, index) => (
                           <motion.span
-                            key={char}
+                            key={char.concat(index.toString())}
                             custom={index}
                             variants={typingVariants}
                             initial="hidden"
@@ -124,7 +106,7 @@ const Home = () => {
                       {Array.from(sections[currentSection].subDescription).map(
                         (char, index) => (
                           <motion.span
-                            key={char}
+                            key={char.concat(index.toString())}
                             custom={index}
                             variants={typingVariants}
                             initial="hidden"
@@ -136,35 +118,19 @@ const Home = () => {
                         ),
                       )}
                     </motion.p>
-                    <div className="mt-5 sm:mt-8 sm:flex justify-center lg:justify-start drop-shadow">
+                    <div className="mt-5 sm:mt-8 sm:flex justify-center drop-shadow">
                       <motion.div
                         whileHover={{ scale: isVisible ? 1.1 : 1 }}
                         className="rounded-md shadow"
                       >
                         <Link
                           to="/create-room"
-                          className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10"
+                          className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg"
                         >
                           Start Planning
                         </Link>
                       </motion.div>
                     </div>
-                  </div>
-                  <div
-                    className={`mt-10 lg:mt-0 lg:w-3/5 px-10 ${
-                      currentSection % 2 === 0
-                        ? "lg:ml-20 md:ml-20"
-                        : "lg:mr-20 md:mr-20"
-                    }`}
-                  >
-                    <motion.img
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5 }}
-                      src={sections[currentSection].image}
-                      alt="Agile Estimations"
-                      className="w-full h-full object-cover object-center rounded-lg shadow-lg"
-                    />
                   </div>
                 </div>
               </motion.div>

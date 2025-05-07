@@ -6,7 +6,7 @@ import type User from "../../../models/User";
 import { useParams } from "react-router-dom";
 import RoomHeader from "./RoomHeader";
 import IssuesComponent from "./issue-list/IssuesComponent";
-import { IssueStatus } from "../../../models/IssueStatus";
+import IssueStatus from "../../../models/IssueStatus";
 import { useNavigate } from "react-router-dom";
 import environment from "../config";
 

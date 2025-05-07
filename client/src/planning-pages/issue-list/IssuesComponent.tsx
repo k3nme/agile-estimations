@@ -1,12 +1,12 @@
 import { IconButton, Stack, TextField } from "@mui/material";
-import { UserType } from "../../../../models/UserType";
+import UserType from "../../../../models/UserType";
 import IssueList from "./IssueList";
 import { motion } from "framer-motion";
 import { useRef, useState } from "react";
 import type Issue from "../../../../models/Issue";
 import { AddCircle, Close } from "@mui/icons-material";
 import type User from "../../../../models/User";
-import { IssueStatus } from "../../../../models/IssueStatus";
+import IssueStatus from "../../../../models/IssueStatus";
 
 import environment from "../../config";
 

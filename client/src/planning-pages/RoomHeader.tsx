@@ -19,7 +19,7 @@ import {
   Person,
   SupervisorAccount,
 } from "@mui/icons-material";
-import { UserType } from "../../../models/UserType";
+import UserType from "../../../models/UserType";
 import type Issue from "../../../models/Issue";
 
 import { motion } from "framer-motion";

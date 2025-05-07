@@ -5,7 +5,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { motion } from "framer-motion";
 import type User from "../../../../models/User";
-import { UserType } from "../../../../models/UserType";
+import UserType from "../../../../models/UserType";
 
 import environment from "../../config";
 
