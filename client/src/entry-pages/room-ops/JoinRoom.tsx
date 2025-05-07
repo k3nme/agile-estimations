@@ -3,7 +3,7 @@ import Header from "../app/Header";
 import { colors, Switch, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { UserType } from "../../../../models/UserType";
+import UserType from "../../../../models/UserType";
 import type User from "../../../../models/User";
 import environment from "../../config";
 

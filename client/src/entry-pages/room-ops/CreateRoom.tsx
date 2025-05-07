@@ -6,7 +6,7 @@ import ActivityType from "../../../../models/ActivityType";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { generateID } from "../../utilities/HelperMethods";
-import { UserType } from "../../../../models/UserType";
+import UserType from "../../../../models/UserType";
 import type User from "../../../../models/User";
 import environment from "../../config";
 
