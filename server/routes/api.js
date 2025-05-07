@@ -2,7 +2,7 @@ import fastifyMongodb from "@fastify/mongodb";
 import websocket from "@fastify/websocket";
 import rateLimit from "@fastify/rate-limit";
 import helmet from "@fastify/helmet";
-import process from "process";
+import process from "node:process";
 import cors from "@fastify/cors";
 
 const db_name = "agile_estimations";
@@ -331,8 +331,8 @@ export default async function (fastify, opts) {
             { id: roomID },
             {
               $set: {
-                [`issues.$[issue].finalEstimation`]: final_estimation,
-                [`issues.$[issue].issueStatus`]: "Estimated",
+                "issues.$[issue].finalEstimation": final_estimation,
+                "issues.$[issue].issueStatus": "Estimated",
               },
             },
             {
@@ -344,7 +344,7 @@ export default async function (fastify, opts) {
         } else {
           const totalEstimation = Object.keys(estimations).reduce(
             (acc, key) => {
-              const numericKey = isNaN(Number(key)) ? 0 : Number(key);
+              const numericKey = Number.isNaN(Number(key)) ? 0 : Number(key);
               return acc + numericKey * estimations[key].length;
             },
             0,
@@ -371,8 +371,8 @@ export default async function (fastify, opts) {
             { id: roomID },
             {
               $set: {
-                ["issues.$[issue].finalEstimation"]: final_estimation,
-                ["issues.$[issue].issueStatus"]: "Estimated",
+                "issues.$[issue].finalEstimation": final_estimation,
+                "issues.$[issue].issueStatus": "Estimated",
               },
             },
             {

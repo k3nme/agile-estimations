@@ -1,4 +1,6 @@
-export enum IssueStatus {
-	Estimate = "Estimate",
-	Estimated = "Estimated",
+enum IssueStatus {
+  Estimate = "Estimate",
+  Estimated = "Estimated",
 }
+
+export default IssueStatus;

@@ -10,7 +10,7 @@ import {
 
 import React, { useState } from "react";
 
-import environment from "../../config/";
+import environment from "../../config";
 
 interface Props {
   open: boolean;

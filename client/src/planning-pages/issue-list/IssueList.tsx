@@ -1,10 +1,10 @@
-import Issue from "../../../../models/Issue";
+import type Issue from "../../../../models/Issue";
 import DeleteIcon from "@mui/icons-material/Delete";
 import TextWithLink from "../../utilities/TextWithLink";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { motion } from "framer-motion";
-import User from "../../../../models/User";
+import type User from "../../../../models/User";
 import { UserType } from "../../../../models/UserType";
 
 import environment from "../../config";
@@ -61,7 +61,7 @@ const IssueList = ({
       className="issue-list-container overflow-y-scroll"
       style={{
         maxHeight:
-          currentUser?.type.toString() == UserType.Participant
+          currentUser?.type.toString() === UserType.Participant
             ? "36rem"
             : "33rem",
         scrollbarWidth: "thin",
@@ -74,8 +74,8 @@ const IssueList = ({
       }}
     >
       {issues &&
-        issues.length == 0 &&
-        currentUser?.type.toString() == UserType.Participant && (
+        issues.length === 0 &&
+        currentUser?.type.toString() === UserType.Participant && (
           <div className="flex flex-col items-center justify-center h-full text-center align-middle">
             <p className="text-xl text-indigo-600 justify-center items-center text-center">
               No issues
@@ -84,7 +84,7 @@ const IssueList = ({
         )}
       {issues &&
         issues?.length > 0 &&
-        issues?.map((issue, index) => (
+        issues?.map((issue) => (
           <motion.div
             className="flex flex-row space-x-4 m-4"
             initial={{
@@ -105,15 +105,16 @@ const IssueList = ({
               zIndex: 0,
             }}
             transition={{ duration: 0.5 }}
-            key={index}
+            key={issue.id}
           >
             <div
               className="issue-item cursor-pointer flex-grow p-4 bg-white rounded-lg shadow"
               onClick={() => handleIssueClick(issue)}
+              onKeyDown={() => handleIssueClick(issue)}
             >
               <div className="issue-title flex justify-between items-center mb-2">
                 <span>
-                  {issue.issueStatus.toString() == "Estimated" ? (
+                  {issue.issueStatus.toString() === "Estimated" ? (
                     <CheckCircleIcon className="check-circle-icon text-indigo-600 hover:text-indigo-700 cursor-pointer" />
                   ) : (
                     <CheckCircleOutlineIcon className="check-circle-icon text-indigo-600 hover:text-indigo-700 cursor-pointer" />

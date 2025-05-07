@@ -1,4 +1,6 @@
-export enum UserType {
-	Participant = "Participant",
-	Facilitator = "Facilitator",
+enum UserType {
+  Participant = "Participant",
+  Facilitator = "Facilitator",
 }
+
+export default UserType;

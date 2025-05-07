@@ -3,9 +3,9 @@ import { UserType } from "../../../../models/UserType";
 import IssueList from "./IssueList";
 import { motion } from "framer-motion";
 import { useRef, useState } from "react";
-import Issue from "../../../../models/Issue";
+import type Issue from "../../../../models/Issue";
 import { AddCircle, Close } from "@mui/icons-material";
-import User from "../../../../models/User";
+import type User from "../../../../models/User";
 import { IssueStatus } from "../../../../models/IssueStatus";
 
 import environment from "../../config";
@@ -107,7 +107,7 @@ const IssuesComponent = (props: {
   };
 
   return (
-    <div className={`m-4`} ref={issuesDivRef}>
+    <div className={"m-4"} ref={issuesDivRef}>
       <IconButton className="float-right" onClick={handleCloseIssueList}>
         <Close />
       </IconButton>

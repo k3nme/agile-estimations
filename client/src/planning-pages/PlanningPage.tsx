@@ -1,13 +1,10 @@
 import { useRef, useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import PlanningPoker from "./planning-poker-div/PlanningPokerComponent";
-import Issue from "../../../models/Issue";
+import type Issue from "../../../models/Issue";
+import type User from "../../../models/User";
 import { useParams } from "react-router-dom";
 import RoomHeader from "./RoomHeader";
-import {
-  getFromSessionStorage,
-  updateSessionStorage,
-} from "../utilities/P3SessionStorage";
-import User from "../../../models/User";
 import IssuesComponent from "./issue-list/IssuesComponent";
 import { IssueStatus } from "../../../models/IssueStatus";
 import { useNavigate } from "react-router-dom";
@@ -19,29 +16,18 @@ interface RevealedState {
 
 const App = () => {
   const { roomID } = useParams();
+  const location = useLocation();
+  const currentUser = location.state?.currentUser;
   const navigate = useNavigate();
-  const [showUserNameDialog, setShowUserNameDialog] = useState(false);
   const [roomName, setRoomName] = useState("");
-  const [currentUser, setCurrentUser] = useState<User>(
-    getFromSessionStorage("user") as User,
-  );
   const [selectedEstimationType, setSelectedEstimationType] =
     useState<string>("");
   const [estimationValues, setEstimationValues] = useState<string[]>([]);
   const [issues, setIssues] = useState<Issue[]>([]);
-  const [users, setUsers] = useState<User[]>(
-    currentUser ? [currentUser as User] : [],
-  );
+  const [users, setUsers] = useState<User[]>(currentUser ? [currentUser] : []);
   const roomSocket = useRef<WebSocket | undefined>();
 
-  const [showIssueList, setShowIssueList] = useState(
-    window.innerWidth > 768 ? true : false,
-  );
-
-  const handleUserNameDialogClose = () => {
-    setCurrentUser(getFromSessionStorage("user") as User);
-    setShowUserNameDialog(false);
-  };
+  const [showIssueList, setShowIssueList] = useState(window.innerWidth > 768);
 
   const handleIssueListClick = () => {
     setShowIssueList((showIssueList) => !showIssueList);
@@ -92,17 +78,15 @@ const App = () => {
             return prevUsers;
           }); // Add the new user to existing users
         } else if (data.action === "user-left") {
-          const currentUserInBrowser = getFromSessionStorage("user") as User;
+          const currentUserInBrowser = currentUser;
           console.log(
-            "the data is :" +
-              data.user.id +
-              ", current is :" +
-              currentUserInBrowser?.id,
+            `the data is :
+              ${data.user.id}
+              , current is :
+              ${currentUserInBrowser?.id}`,
           );
           if (data.user.id === currentUserInBrowser?.id) {
             navigate("/");
-            updateSessionStorage("user", null);
-            updateSessionStorage("userEntryType", "");
           }
           setUsers((prevUsers) =>
             prevUsers.filter((user) => user.id !== data.user.id),
@@ -162,7 +146,7 @@ const App = () => {
             return prevIssues.map((issue) => {
               console.log(
                 "Issue ID:",
-                issue.id + " Data Issue ID:",
+                `${issue.id} Data Issue ID:`,
                 data.issueID,
               );
               if (issue.id === data.issueID) {
@@ -209,11 +193,8 @@ const App = () => {
   useEffect(() => {
     if (roomID && !roomSocket.current) {
       roomSocket.current = establishWebSocketConnection(roomID);
-      if (!currentUser) {
-        setShowUserNameDialog(true);
-      }
     }
-  }, [roomID, currentUser]);
+  });
 
   return (
     <div className="flex h-screen">
@@ -221,7 +202,7 @@ const App = () => {
         <RoomHeader
           roomID={roomID as string}
           roomTitle={roomName}
-          currentUser={currentUser as User}
+          currentUser={currentUser}
           users={users}
           issues={issues}
           onIssueListClick={handleIssueListClick}
@@ -232,7 +213,7 @@ const App = () => {
               <div className="planning-poker-container flex flex-col flex-grow h-full">
                 <PlanningPoker
                   roomID={roomID as string}
-                  currentUser={currentUser as User}
+                  currentUser={currentUser}
                   users={users}
                   issues={issues}
                   selectedIssue={selectedIssue}
@@ -248,7 +229,7 @@ const App = () => {
               <div className="absolute inset-0 bg-white">
                 <IssuesComponent
                   roomID={roomID}
-                  currentUser={currentUser as User}
+                  currentUser={currentUser}
                   issues={issues}
                   onIssueListClose={() => setShowIssueList(false)}
                   onIssueSelection={handleIssueSelection}

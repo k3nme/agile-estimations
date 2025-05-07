@@ -1,9 +1,9 @@
-import { UserType } from "./UserType";
+import type UserType from "./UserType";
 
 type User = {
-	id: string;
-	type: UserType;
-	isSpectator: boolean;
+  id: string;
+  type: UserType;
+  isSpectator: boolean;
 };
 
 export default User;

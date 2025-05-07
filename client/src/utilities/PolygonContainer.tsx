@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from "react";
-import User from ".../../../../models/User";
+import type User from ".../../../../models/User";
 import UserCard from "./UserCard";
 import environment from "../config";
 import "../sass/WoodenTable.sass";
-import Issue from "../../../models/Issue";
+import type Issue from "../../../models/Issue";
 
 interface Props {
   roomID: string;
@@ -135,6 +135,7 @@ const UserPolygon = ({
         viewBox={`0 0 ${center.x * 2} ${center.y * 2}`}
         preserveAspectRatio="xMidYMid meet"
       >
+        <title>Polygon</title>
         <defs>
           <linearGradient id="woodGradient" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#5a67d8" />
@@ -166,7 +167,7 @@ const UserPolygon = ({
           r={innerRadius}
           fill="url(#woodenTablePattern)"
           stroke="black"
-        ></circle>
+        />
 
         <text
           x={center.x}
@@ -177,7 +178,7 @@ const UserPolygon = ({
           fill="#fff"
           className="text-2xl p-2 truncate drop-shadow w-20"
         >
-          {selectedIssue && selectedIssue.title ? selectedIssue.title : "Title"}
+          {selectedIssue?.title ? selectedIssue.title : "Title"}
         </text>
 
         <text
@@ -188,7 +189,7 @@ const UserPolygon = ({
           fill="#fff"
           className="text-lg truncate drop-shadow w-20"
         >
-          {selectedIssue && selectedIssue.description ? (
+          {selectedIssue?.description ? (
             <tspan>{selectedIssue.description}</tspan>
           ) : (
             "Description"

@@ -4,7 +4,7 @@ import { colors, Switch, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { UserType } from "../../../../models/UserType";
-import User from "../../../../models/User";
+import type User from "../../../../models/User";
 import environment from "../../config";
 
 const JoinRoom = () => {
@@ -53,9 +53,10 @@ const JoinRoom = () => {
             },
           );
           if (response.ok) {
-            navigate("/" + roomID, {
+            navigate(`/${roomID}`, {
               state: {
                 roomID: roomID,
+                currentUser: currentUser,
               },
             });
           } else {
@@ -77,6 +78,7 @@ const JoinRoom = () => {
 
   const validateJoinRoom = () => {
     setRoomIDError(!roomID ? "Room ID is required" : "");
+    setUserIdError(!userId ? "User ID is required" : "");
   };
 
   return (

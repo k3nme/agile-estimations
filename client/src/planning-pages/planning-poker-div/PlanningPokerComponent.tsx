@@ -1,5 +1,5 @@
-import Issue from "../../../../models/Issue";
-import User from "../../../../models/User";
+import type Issue from "../../../../models/Issue";
+import type User from "../../../../models/User";
 import { IssueNotSelectedComponent } from "./IssueNotSelectedComponent";
 import { PolygonPlanningComponent } from "./PolygonPlanningComponent";
 
@@ -27,7 +27,7 @@ const PlanningPoker = (props: {
   const copyLink = () => {
     const roomLink = document.getElementById("roomLink")?.getAttribute("value");
     if (roomLink) {
-      if (navigator && navigator.clipboard) {
+      if (navigator?.clipboard) {
         navigator.clipboard.writeText(roomLink);
       } else {
         // Fallback for older browsers or non-secure context
@@ -50,12 +50,17 @@ const PlanningPoker = (props: {
     if (roomLink) {
       const roomCode = roomLink.split("/").pop();
 
-      if (navigator && navigator.clipboard) {
-        navigator.clipboard.writeText(roomCode!);
+      if (!roomCode) {
+        console.error("Room Code was not present");
+        return;
+      }
+
+      if (navigator?.clipboard) {
+        navigator.clipboard.writeText(roomCode);
       } else {
         // Fallback for older browsers or non-secure context
         const textArea = document.createElement("textarea");
-        textArea.value = roomCode!;
+        textArea.value = roomCode;
         document.body.appendChild(textArea);
         textArea.select();
         try {
@@ -70,29 +75,30 @@ const PlanningPoker = (props: {
 
   return (
     <>
-      <div className='planning-poker-container grid grid-cols-6 p-2 md:p-4 lg:p-4 h-full md:m-2 lg:m-2'>
+      <div className="planning-poker-container grid grid-cols-6 p-2 md:p-4 lg:p-4 h-full md:m-2 lg:m-2">
         {selectedIssue == null && <IssueNotSelectedComponent />}
         {selectedIssue != null &&
           (users.length <= 1 ? (
             <>
-              <div className='flex flex-col col-span-6 items-center justify-center h-full text-center text-2xl font-semibold'>
-                <h1 className='text-2xl font-bold text-indigo-600 hover:text-indigo-700'>
-                  You seem to be alone. Please invite players to join this session.
+              <div className="flex flex-col col-span-6 items-center justify-center h-full text-center text-2xl font-semibold">
+                <h1 className="text-2xl font-bold text-indigo-600 hover:text-indigo-700">
+                  You seem to be alone. Please invite players to join this
+                  session.
                 </h1>
-                <div className='flex h-fit'>
+                <div className="flex h-fit">
                   <button
-                    title='Copy Link'
-                    type='button'
-                    className='w-fit text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-2 m-4 rounded '
+                    title="Copy Link"
+                    type="button"
+                    className="w-fit text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-2 m-4 rounded "
                     onClick={copyLink}
                   >
                     Copy Invite Link
                   </button>
 
                   <button
-                    title='Copy Code'
-                    type='button'
-                    className='w-fit text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-2 m-4 rounded'
+                    title="Copy Code"
+                    type="button"
+                    className="w-fit text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-2 m-4 rounded"
                     onClick={copyCode}
                   >
                     Copy Invite Code

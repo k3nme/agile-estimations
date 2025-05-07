@@ -1,24 +1,13 @@
 import { motion } from "framer-motion";
 import Header from "../app/Header";
-import {
-  colors,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Switch,
-  TextField,
-} from "@mui/material";
+import * as material from "@mui/material";
 import EstimationType from "../../../../models/EstimationType";
 import ActivityType from "../../../../models/ActivityType";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { updateSessionStorage } from "../../utilities/P3SessionStorage";
 import { generateID } from "../../utilities/HelperMethods";
 import { UserType } from "../../../../models/UserType";
-import User from "../../../../models/User";
+import type User from "../../../../models/User";
 import environment from "../../config";
 
 const CreateRoom = () => {
@@ -57,8 +46,6 @@ const CreateRoom = () => {
         selectedEstimationType === "None" ? "Please select an option" : "",
       );
       return false;
-    } else {
-      setSelectError("");
     }
 
     function validateString(input: string): boolean {
@@ -69,16 +56,18 @@ const CreateRoom = () => {
       if (!customValues) {
         setCustomValuesError("Custom Estimation Values are required");
         return false;
-      } else if (customValues.split(",").length < 2) {
+      }
+
+      if (customValues.split(",").length < 2) {
         setCustomValuesError("At least two estimation values are required");
         return false;
-      } else if (!validateString(customValues)) {
+      }
+
+      if (!validateString(customValues)) {
         setCustomValuesError(
           "Estimation values are invalid. Only numbers / values separated by commas are allowed.",
         );
         return false;
-      } else {
-        setCustomValuesError("");
       }
     }
 
@@ -97,7 +86,6 @@ const CreateRoom = () => {
 
   const createRoom = async () => {
     if (roomName && selectedEstimationType && userId) {
-      updateSessionStorage("userEntryType", "create");
       setIsCreateInProgress(true);
       const currentUser: User = {
         id: userId,
@@ -127,9 +115,10 @@ const CreateRoom = () => {
           }),
         });
         if (response.ok) {
-          navigate("/" + roomID, {
+          navigate(`/${roomID}`, {
             state: {
               roomID: roomID,
+              currentUser: currentUser,
             },
           });
         } else {
@@ -142,14 +131,18 @@ const CreateRoom = () => {
     }
   };
 
-  const handleSelectedActivityChange = (event: SelectChangeEvent<string>) => {
+  const handleSelectedActivityChange = (
+    event: material.SelectChangeEvent<string>,
+  ) => {
     // Clear error when the selection changes
     setSelectError("");
 
     setSelectedActivity(event.target.value as string);
   };
 
-  const handleEstimationTypeChange = (event: SelectChangeEvent<string>) => {
+  const handleEstimationTypeChange = (
+    event: material.SelectChangeEvent<string>,
+  ) => {
     // Clear error when the selection changes
     setSelectError("");
 
@@ -197,7 +190,7 @@ const CreateRoom = () => {
         >
           <h1 className="text-3xl font-bold mb-6 text-center">Create Room</h1>
 
-          <TextField
+          <material.TextField
             error={!!roomNameError}
             label="Room Name"
             required
@@ -211,7 +204,7 @@ const CreateRoom = () => {
             variant="outlined"
           />
 
-          <TextField
+          <material.TextField
             error={!!roomNameError}
             label="User ID"
             required
@@ -225,17 +218,17 @@ const CreateRoom = () => {
             variant="outlined"
           />
 
-          <FormControl
+          <material.FormControl
             error={!!selectError}
             fullWidth
             disabled={isCreateInProgress}
             margin="dense"
             className="mt-6"
           >
-            <InputLabel id="select-activity-label" margin="dense">
+            <material.InputLabel id="select-activity-label" margin="dense">
               Select Activity
-            </InputLabel>
-            <Select
+            </material.InputLabel>
+            <material.Select
               labelId="select-activity-label"
               id="select-activity"
               value={selectedActivity}
@@ -247,36 +240,41 @@ const CreateRoom = () => {
               fullWidth
               variant="outlined"
             >
-              <MenuItem value={"None"} disabled>
+              <material.MenuItem value={"None"} disabled>
                 Select Activity
-              </MenuItem>
+              </material.MenuItem>
               {ActivityType._activityTypes.map((activityType) => (
-                <MenuItem
+                <material.MenuItem
                   key={activityType.id}
                   value={activityType.name}
                   disabled={activityType.disabled}
                 >
                   {activityType.name}
-                </MenuItem>
+                </material.MenuItem>
               ))}
-            </Select>
-            {selectError && <FormHelperText>{selectError}</FormHelperText>}
-          </FormControl>
+            </material.Select>
+            {selectError && (
+              <material.FormHelperText>{selectError}</material.FormHelperText>
+            )}
+          </material.FormControl>
 
           {
             /* Only show this select if the selected activity is estimation */
             selectedActivity === "Estimation" && (
-              <FormControl
+              <material.FormControl
                 error={!!selectError}
                 fullWidth
                 disabled={isCreateInProgress}
                 margin="dense"
                 className="mt-6"
               >
-                <InputLabel id="select-estimation-label" margin="dense">
+                <material.InputLabel
+                  id="select-estimation-label"
+                  margin="dense"
+                >
                   Select Estimation Type
-                </InputLabel>
-                <Select
+                </material.InputLabel>
+                <material.Select
                   labelId="select-estimation-label"
                   id="select-estimation"
                   value={selectedEstimationType}
@@ -288,25 +286,29 @@ const CreateRoom = () => {
                   fullWidth
                   variant="outlined"
                 >
-                  <MenuItem value={"None"} disabled>
+                  <material.MenuItem value={"None"} disabled>
                     Select Estimation Type
-                  </MenuItem>
+                  </material.MenuItem>
                   {EstimationType._estimationTypes.map((estimationType) => (
-                    <MenuItem
+                    <material.MenuItem
                       key={estimationType.id}
                       value={estimationType.name}
                     >
                       {estimationType.display}
-                    </MenuItem>
+                    </material.MenuItem>
                   ))}
-                </Select>
-                {selectError && <FormHelperText>{selectError}</FormHelperText>}
-              </FormControl>
+                </material.Select>
+                {selectError && (
+                  <material.FormHelperText>
+                    {selectError}
+                  </material.FormHelperText>
+                )}
+              </material.FormControl>
             )
           }
 
           {selectedEstimationType === "Custom" && (
-            <TextField
+            <material.TextField
               error={!!customValuesError}
               label="Custom Estimation Values (comma-separated)"
               value={customValues}
@@ -326,16 +328,16 @@ const CreateRoom = () => {
               <div className="flex justify-between items-center px-2 py-2 w-full sm:w-auto">
                 <p>Join as spectator</p>
                 <div>
-                  <Switch
+                  <material.Switch
                     checked={isSpectator}
                     onChange={handleSpectator}
                     sx={{
                       "& .MuiSwitch-switchBase.Mui-checked": {
-                        color: colors.blue[900],
+                        color: material.colors.blue[900],
                       },
                       "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
                         {
-                          backgroundColor: colors.blue[900],
+                          backgroundColor: material.colors.blue[900],
                         },
                     }}
                   />

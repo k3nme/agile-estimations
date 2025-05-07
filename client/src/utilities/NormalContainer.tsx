@@ -1,8 +1,8 @@
-import User from ".../../../../models/User";
+import type User from ".../../../../models/User";
 import UserCard from "./UserCard";
 import "../sass/WoodenTable.sass";
 import environment from "../config";
-import Issue from "../../../models/Issue";
+import type Issue from "../../../models/Issue";
 
 interface Props {
   roomID: string;
@@ -17,8 +17,8 @@ interface Props {
 const isUserEstimationPresent = (user: User, issue: Issue): boolean => {
   return (
     issue.estimations &&
-    Object.values(issue.estimations).some(
-      (userIds) => userIds && userIds.includes(user.id),
+    Object.values(issue.estimations).some((userIds) =>
+      userIds?.includes(user.id),
     )
   );
 };
@@ -30,7 +30,7 @@ const userEstimation = (user: User, issue: Issue): string | undefined => {
   }
 
   for (const [estimation, userIds] of Object.entries(issue.estimations)) {
-    if (userIds && userIds.includes(user.id)) {
+    if (userIds?.includes(user.id)) {
       return estimation;
     }
   }
@@ -76,19 +76,19 @@ const Users = ({
   return (
     <div className="flex flex-col flex-grow h-full justify-evenly">
       <p className="text-m text-center truncate drop-shadow font-bold">
-        {selectedIssue && selectedIssue.title ? selectedIssue.title : "Title"}
+        {selectedIssue?.title ? selectedIssue.title : "Title"}
       </p>
 
       <p className="text-m truncate text-center p-2 drop-shadow font-bold">
-        {selectedIssue && selectedIssue.description ? (
+        {selectedIssue?.description ? (
           <tspan>{selectedIssue.description}</tspan>
         ) : (
           "Description"
         )}
       </p>
-      <div className="normal-div flex rounded justify-center items-center min-h-60 overflow-y-scroll">
-        {users.map((user, index) => (
-          <div key={index} className="table-container">
+      <div className="normal-div flex rounded justify-center items-center min-h-60">
+        {users.map((user) => (
+          <div key={user.id} className="table-container">
             <UserCard
               user={user}
               isCurrentUser={currentUser.id === user.id}

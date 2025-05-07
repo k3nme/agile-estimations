@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 
 import { Link } from "react-router-dom";
-import User from "../../../models/User";
+import type User from "../../../models/User";
 import {
   ExitToApp,
   ExitToAppTwoTone,
@@ -20,7 +20,7 @@ import {
   SupervisorAccount,
 } from "@mui/icons-material";
 import { UserType } from "../../../models/UserType";
-import Issue from "../../../models/Issue";
+import type Issue from "../../../models/Issue";
 
 import { motion } from "framer-motion";
 import Logo from "../logo/Logo";
@@ -118,7 +118,7 @@ const RoomHeader = ({
   const copyLink = () => {
     const roomLink = document.getElementById("roomLink")?.getAttribute("value");
     if (roomLink) {
-      if (navigator && navigator.clipboard) {
+      if (navigator?.clipboard) {
         navigator.clipboard.writeText(roomLink);
       } else {
         // Fallback for older browsers or non-secure context
@@ -142,12 +142,17 @@ const RoomHeader = ({
     if (roomLink) {
       const roomCode = roomLink.split("/").pop();
 
-      if (navigator && navigator.clipboard) {
-        navigator.clipboard.writeText(roomCode!);
+      if (!roomCode) {
+        console.error("Room Code was not present");
+        return;
+      }
+
+      if (navigator?.clipboard) {
+        navigator.clipboard.writeText(roomCode);
       } else {
         // Fallback for older browsers or non-secure context
         const textArea = document.createElement("textarea");
-        textArea.value = roomCode!;
+        textArea.value = roomCode;
         document.body.appendChild(textArea);
         textArea.select();
         try {
@@ -192,6 +197,7 @@ const RoomHeader = ({
                 stroke="currentColor"
                 className="size-6"
               >
+                <title>Icon</title>
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -247,7 +253,7 @@ const RoomHeader = ({
                   className=" text-indigo-600 cursor-pointer hover:text-indigo-700 font-medium drop-shadow"
                   onClick={handleUserMenuOpen}
                 >
-                  {currentUser.type == UserType.Facilitator.toString() ? (
+                  {currentUser.type === UserType.Facilitator.toString() ? (
                     <SupervisorAccount />
                   ) : (
                     <Person />
@@ -321,7 +327,7 @@ const RoomHeader = ({
           </MenuItem>
           {currentUser && (
             <MenuItem onClick={handleMenuClose}>
-              {currentUser.type == UserType.Facilitator.toString() ? (
+              {currentUser.type === UserType.Facilitator.toString() ? (
                 <SupervisorAccount className="text-indigo-600 hover:text-indigo-700 drop-shadow" />
               ) : (
                 <Person className="text-indigo-600 hover:text-indigo-700 drop-shadow" />
@@ -409,28 +415,31 @@ const RoomHeader = ({
           <DialogTitle textAlign={"center"}>{"Members"}</DialogTitle>
           <DialogContent>
             <div className="flex justify-center rounded-md px-4 py-2 text-center">
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-4 gap-4">
                 <div className="font-bold">Name</div>
                 <div className="font-bold">Type</div>
                 <div className="font-bold">Spectator?</div>
-                {users.map((user, index) => (
-                  <React.Fragment key={index}>
+                <div className="font-bold" />
+                {users.map((user) => (
+                  <React.Fragment key={user.id}>
                     <div>{user.id}</div>
                     <div>{user.type}</div>
                     <div>{user.isSpectator ? "Yes" : "No"}</div>
-                    {user.type === UserType.Facilitator.toString() && (
-                      <MenuItem
-                        onClick={() => {
-                          handleMenuClose();
-                          handleExitRoom(user);
-                        }}
-                      >
-                        <ExitToApp className="text-indigo-600 hover:text-indigo-700 drop-shadow" />
-                        <p className="text-indigo-600 hover:text-indigo-700 drop-shadow">
-                          x
-                        </p>
-                      </MenuItem>
-                    )}
+                    {user.type === UserType.Facilitator.toString() &&
+                      user !== currentUser && (
+                        <div
+                          onClick={() => {
+                            handleMenuClose();
+                            handleExitRoom(user);
+                          }}
+                          onKeyDown={() => {
+                            handleMenuClose();
+                            handleExitRoom(user);
+                          }}
+                        >
+                          <ExitToApp className="text-indigo-600 hover:text-indigo-700 drop-shadow" />
+                        </div>
+                      )}
                   </React.Fragment>
                 ))}
               </div>

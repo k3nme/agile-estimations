@@ -1,12 +1,12 @@
-import { IssueStatus } from "./IssueStatus";
+import type IssueStatus from "./IssueStatus";
 
 type Issue = {
-	id: string;
-	title: string;
-	description: string;
-	finalEstimation: string;
-	issueStatus: IssueStatus;
-	estimations: { [key: string]: string[] };
+  id: string;
+  title: string;
+  description: string;
+  finalEstimation: string;
+  issueStatus: IssueStatus;
+  estimations: { [key: string]: string[] };
 };
 
 export default Issue;

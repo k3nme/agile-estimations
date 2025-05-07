@@ -1,10 +1,10 @@
 import { useState } from "react";
 import EstimationType from "../../../../models/EstimationType";
 import { motion } from "framer-motion";
-import User from "../../../../models/User";
+import type User from "../../../../models/User";
 import DonutChart from "../../utilities/DonutChart";
 import { CircularProgress, Grid } from "@mui/material";
-import Issue from "../../../../models/Issue";
+import type Issue from "../../../../models/Issue";
 
 import environment from "../../config";
 
@@ -35,11 +35,10 @@ const EstimationComponent = ({
 
   const [confirmed, setConfirmed] = useState<ConfirmedState>(
     issues.reduce((acc, issue) => {
-      acc[issue.id] = Object.values(issue.estimations).find((estimation) =>
-        estimation.includes(currentUser.id),
-      )
-        ? true
-        : false;
+      const hasEstimation = Object.values(issue.estimations).find(
+        (estimation) => estimation.includes(currentUser.id),
+      );
+      acc[issue.id] = hasEstimation !== undefined;
       return acc;
     }, {} as ConfirmedState),
   );
@@ -132,6 +131,7 @@ const EstimationComponent = ({
           height="120"
           xmlSpace="preserve"
         >
+          <title>{size}</title>
           <path
             fill="#5a67d8"
             d="M49.8 17.961c-0.543-1.093-5.385-10.726-7.919-12.45-2.438-1.657-8.41-4.215-8.664-4.322l-0.291-0.125-0.311 0.06c-0.05 0.01-5.075 0.968-7.615 0.968s-7.565-0.958-7.615-0.968l-0.311-0.06-0.291 0.125c-0.254 0.107-6.225 2.665-8.664 4.322-2.534 1.724-7.375 11.357-7.919 12.45l-0.2 0.403 0.157 0.421c0.065 0.176 1.679 4.327 8.793 5.277l0.616 0.083 2.185-3.039c0.983 5.617-0.419 18.846-2.155 25.213l-0.25 0.915 0.89 0.33c0.151 0.056 3.819 1.371 14.764 1.371s14.614-1.315 14.764-1.371l0.89-0.33-0.25-0.915c-1.735-6.367-3.138-19.596-2.155-25.213l2.185 3.039 0.616-0.083c7.114-0.948 8.727-5.1 8.793-5.277l0.157-0.421zM30.711 3.563C29.691 4.755 27.898 6.101 25 6.101s-4.691-1.347-5.711-2.539c1.751 0.28 4.122 0.605 5.711 0.605s3.96-0.325 5.711-0.605M46.667 19.625c-0.892 0.797-2.519 1.814-5.282 2.285l-3.669-5.104-0.773 1.514c-0.746 1.458-1.502 4.976-0.863 13.446 0.381 5.046 1.173 10.422 2.063 14.091-1.599 0.361-5.511 1.001-13.144 1.001-6.945 0-11.213-0.56-13.145-0.995 0.89-3.669 1.683-9.049 2.064-14.098 0.64-8.47-0.116-11.988-0.861-13.446l-0.773-1.514-3.67 5.104c-4.21-0.715-5.819-2.667-6.322-3.49 2.007-3.977 5.482-10.164 6.994-11.191 1.74-1.183 5.657-2.962 7.421-3.741a10 10 0 0 0 1.427 1.877c1.248 1.282 3.45 2.812 6.865 2.812s5.619-1.529 6.865-2.812a10 10 0 0 0 1.427-1.877c1.764 0.779 5.68 2.558 7.421 3.741 1.511 1.028 4.985 7.211 6.992 11.189a5.75 5.75 0 0 1-1.038 1.208"
@@ -200,7 +200,7 @@ const EstimationComponent = ({
                         animate={{ scale: [1, 2, 1] }}
                         transition={{
                           duration: 1,
-                          repeat: Infinity,
+                          repeat: Number.POSITIVE_INFINITY,
                           ease: "easeInOut",
                         }}
                       >
@@ -218,7 +218,7 @@ const EstimationComponent = ({
                         animate={{ scale: [1, 2, 1] }}
                         transition={{
                           duration: 1,
-                          repeat: Infinity,
+                          repeat: Number.POSITIVE_INFINITY,
                           ease: "easeInOut",
                         }}
                       >

@@ -3,7 +3,7 @@ import Header from "../app/Header";
 import { TextField } from "@mui/material";
 import { useState } from "react";
 import { Download } from "@mui/icons-material";
-import Issue from "../../../../models/Issue";
+import type Issue from "../../../../models/Issue";
 import environment from "../../config";
 
 const RoomHistory = () => {
@@ -37,7 +37,7 @@ const RoomHistory = () => {
           ]);
 
           // Creating a CSV string
-          let csvContent = csvHeaders.join(",") + "\n";
+          let csvContent = `${csvHeaders.join(",")}\n`;
           csvContent += csvRows
             .map((row: unknown[]) => row.join(","))
             .join("\n");

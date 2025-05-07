@@ -1,5 +1,3 @@
-'use strict'
-
 import { test } from "node:test";
 import { equal } from "node:assert";
 
@@ -7,11 +5,11 @@ import Fastify from "fastify";
 import Support from "../../plugins/support";
 
 test("support works standalone", async (t) => {
-	const fastify = Fastify();
-	fastify.register(Support);
+  const fastify = Fastify();
+  fastify.register(Support);
 
-	await fastify.ready();
-	equal(fastify.someSupport(), "hugs");
+  await fastify.ready();
+  equal(fastify.someSupport(), "hugs");
 });
 
 // You can also use plugin with opts in fastify v2
