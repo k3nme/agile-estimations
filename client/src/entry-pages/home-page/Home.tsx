@@ -75,19 +75,6 @@ const Home = () => {
                         ),
                       )}
                     </motion.p>
-                    <div className="mt-5 sm:mt-8 sm:flex justify-center drop-shadow">
-                      <motion.div
-                        whileHover={{ scale: isVisible ? 1.1 : 1 }}
-                        className="rounded-md shadow"
-                      >
-                        <Link
-                          to="/create-room"
-                          className="w-full flex items-center justify-center px-4 py-1 border border-transparent text-base font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 md:py-2 md:text-lg"
-                        >
-                          Start Planning
-                        </Link>
-                      </motion.div>
-                    </div>
                   </div>
                 </div>
               </motion.div>

@@ -19,7 +19,7 @@ const JoinRoom = () => {
     setIsSpectator(event.target.checked);
   };
   const joinRoom = async () => {
-    if (roomID) {
+    if (roomID && userId) {
       setIsJoinInProgress(true);
       try {
         const response = await fetch(
@@ -61,6 +61,10 @@ const JoinRoom = () => {
             });
           } else {
             console.log("Request failed with status:", response.status);
+            if (response.status === 400) {
+              const errorData = await response.json();
+              setUserIdError(errorData.error);
+            }
           }
         } else {
           if (response.status === 404) {
@@ -118,7 +122,7 @@ const JoinRoom = () => {
           />
 
           <TextField
-            error={!!roomIDError}
+            error={!!userIdError}
             label="User ID"
             required
             fullWidth

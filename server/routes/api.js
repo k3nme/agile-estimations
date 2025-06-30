@@ -213,7 +213,7 @@ export default async function (fastify, opts) {
   fastify.register(async (fastify) => {
     fastify.delete("/remove-user-from-room", async (request, reply) => {
       try {
-        const { roomID, currentUser } = request.body;
+        const { roomID, user } = request.body;
         const db = fastify.mongo.db;
         const roomsCollection = db.collection(collection_name);
 
@@ -222,7 +222,7 @@ export default async function (fastify, opts) {
           {
             $pull: {
               user: {
-                id: currentUser.id,
+                id: user.id,
               },
             },
           },
@@ -235,7 +235,7 @@ export default async function (fastify, opts) {
             client.send(
               JSON.stringify({
                 action: "user-left",
-                user: currentUser,
+                user: user,
               }),
             );
           }
@@ -410,6 +410,12 @@ export default async function (fastify, opts) {
 
         const db = fastify.mongo.db;
         const roomsCollection = db.collection(collection_name);
+
+        const userExists = await roomsCollection.findOne({ id: id, "users.id": user.id });
+        if (userExists) {
+          reply.status(400).send({ error: "User already exists in the room" });
+          return;
+        }
 
         const result = await roomsCollection.updateOne(
           { id: id },

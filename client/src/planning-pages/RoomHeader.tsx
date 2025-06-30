@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogActions,
@@ -113,28 +114,6 @@ const RoomHeader = ({
     } catch (error) {
       console.log("Request failed with error:", error);
     }
-  };
-
-  const copyLink = () => {
-    const roomLink = document.getElementById("roomLink")?.getAttribute("value");
-    if (roomLink) {
-      if (navigator?.clipboard) {
-        navigator.clipboard.writeText(roomLink);
-      } else {
-        // Fallback for older browsers or non-secure context
-        const textArea = document.createElement("textarea");
-        textArea.value = roomLink;
-        document.body.appendChild(textArea);
-        textArea.select();
-        try {
-          document.execCommand("copy");
-        } catch (err) {
-          console.error("Fallback: Could not copy text: ", err);
-        }
-        document.body.removeChild(textArea);
-      }
-    }
-    setOpen(false);
   };
 
   const copyCode = () => {
@@ -362,16 +341,17 @@ const RoomHeader = ({
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle textAlign={"center"}>{"Invite Members"}</DialogTitle>
           <DialogContent>
-            <div className="flex justify-center rounded-md px-4 mt-4 py-2">
+            <div className="flex flex-col justify-center rounded-md px-4 mt-4 py-2">
+              <p className="mb-4">Copy code to invite members into this room</p>
               <TextField
-                label="Room Link"
-                id="roomLink"
+                label="Room Code"
+                id="roomCode"
                 fullWidth
                 margin="dense"
                 required
                 disabled
                 variant="outlined"
-                value={window.location.href}
+                value={window.location.href.split("/").pop()}
               />
             </div>
           </DialogContent>
@@ -382,14 +362,6 @@ const RoomHeader = ({
               alignItems="center"
               sx={{ width: "100%", alignItems: "center" }}
             >
-              <button
-                title="Copy Link"
-                type="button"
-                className="w-60 bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-2 rounded "
-                onClick={copyLink}
-              >
-                Copy Link
-              </button>
 
               <button
                 title="Copy Code"
@@ -422,21 +394,24 @@ const RoomHeader = ({
                     <div>{user.id}</div>
                     <div>{user.type}</div>
                     <div>{user.isSpectator ? "Yes" : "No"}</div>
-                    {user.type === UserType.Facilitator.toString() &&
-                      user !== currentUser && (
-                        <div
-                          onClick={() => {
-                            handleMenuClose();
-                            handleExitRoom(user);
-                          }}
-                          onKeyDown={() => {
-                            handleMenuClose();
-                            handleExitRoom(user);
-                          }}
-                        >
-                          <ExitToApp className="text-indigo-600 hover:text-indigo-700 drop-shadow" />
-                        </div>
-                      )}
+                    <div>
+                      {currentUser?.type === UserType.Facilitator.toString() &&
+                        user !== currentUser && (
+                          <button type="button"
+                            onClick={() => {
+                              handleMenuClose();
+                              handleExitRoom(user);
+                            }}
+                            onKeyDown={() => {
+                              handleMenuClose();
+                              handleExitRoom(user);
+                            }}
+                          >
+                            <ExitToApp className="text-indigo-600 hover:text-indigo-700 drop-shadow" />
+                          </button>
+                        )}
+                    </div>
+
                   </React.Fragment>
                 ))}
               </div>
