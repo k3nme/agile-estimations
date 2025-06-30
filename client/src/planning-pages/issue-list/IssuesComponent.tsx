@@ -161,7 +161,6 @@ const IssuesComponent = (props: {
                       multiline
                       margin="dense"
                       fullWidth
-                      required
                       onChange={(e) => setNewIssueDescription(e.target.value)}
                       value={newIssueDescription}
                       helperText={issueDescriptionError}

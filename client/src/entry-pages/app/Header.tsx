@@ -51,28 +51,23 @@ const Header = () => {
 						 "
             whileHover={{ scale: 1.0, borderBottom: "1px solid #4f46e5" }}
           >
-            <Link to="/create-room" className="font-medium drop-shadow">
-              Create Room
+            <Link
+              to="/create-room"
+              className="w-full flex items-center justify-center px-3 py-1 border border-transparent text-base font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 md:py-1 md:text-lg"
+            >
+              Create
             </Link>
           </motion.span>
-          <span className="text-indigo-600 hover:text-indigo-700">|</span>
           {/* Join Room Link */}
           <motion.span
             className="relative cursor-pointer text-indigo-600 hover:text-indigo-700"
             whileHover={{ scale: 1.0, borderBottom: "1px solid #4f46e5" }}
           >
-            <Link to="/join-room" className="font-medium drop-shadow">
-              Join Room
-            </Link>
-          </motion.span>
-          <span className="text-indigo-600 hover:text-indigo-700">|</span>
-          {/* History Link */}
-          <motion.span
-            className="relative cursor-pointer text-indigo-600 hover:text-indigo-700"
-            whileHover={{ scale: 1.0, borderBottom: "1px solid #4f46e5" }}
-          >
-            <Link to="/history" className="font-medium drop-shadow">
-              History
+            <Link
+              to="/join-room"
+              className="w-full flex items-center justify-center px-3 py-1 border border-transparent text-base font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 md:py-1 md:text-lg"
+            >
+              Join
             </Link>
           </motion.span>
         </div>
@@ -109,15 +104,6 @@ const Header = () => {
               className="text-indigo-600 hover:text-indigo-700 drop-shadow"
             >
               Join
-            </Link>
-          </MenuItem>
-
-          <MenuItem>
-            <Link
-              to="/history"
-              className="text-indigo-600 hover:text-indigo-700 drop-shadow"
-            >
-              History
             </Link>
           </MenuItem>
 

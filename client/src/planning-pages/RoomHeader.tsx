@@ -175,7 +175,7 @@ const RoomHeader = ({
       </div>
 
       {roomTitle && (
-        <div className="text-indigo-700 text-xl absolute text-center w-40 h-18 m-4 font-bold justify-center items-center">
+        <div className="text-indigo-700 underline underline-offset-4 text-xl absolute text-center w-40 h-18 m-4 font-bold justify-center items-center">
           {roomTitle}
         </div>
       )}
@@ -207,42 +207,38 @@ const RoomHeader = ({
             </IconButton>
           </div>
 
-          <div className="hidden md:flex flex-row justify-between gap-6 py-4">
+          <div className="hidden md:flex flex-row justify-between gap-6 py-3">
             <motion.span
               whileHover={{
                 borderBottom: "1px solid #4f46e5",
               }}
-              className="relative cursor-pointer text-indigo-600 hover:text-indigo-700 drop-shadow font-medium "
+              className="relative cursor-pointer text-white hover:text-white bg-indigo-700 px-4 py-1 rounded drop-shadow font-medium "
               onClick={handleClickOpen}
             >
               Invite
             </motion.span>
 
-            <span className="text-indigo-600 hover:text-indigo-700">|</span>
-
             <motion.span
               whileHover={{
                 borderBottom: "1px solid #4f46e5",
               }}
-              className="relative cursor-pointer text-indigo-600 hover:text-indigo-700 font-medium drop-shadow"
+              className="relative cursor-pointer text-white hover:text-white bg-indigo-700 px-4 py-1 rounded
+ font-medium drop-shadow"
               onClick={handleUserInformationDialogOpen}
             >
               Members({users.length})
             </motion.span>
 
-            <span className="text-indigo-600 hover:text-indigo-700">|</span>
-
             <motion.span
               whileHover={{
                 borderBottom: "1px solid #4f46e5",
               }}
-              className="relative cursor-pointer text-indigo-600 hover:text-indigo-700 font-medium drop-shadow"
+              className="relative cursor-pointer text-white hover:text-white bg-indigo-700 px-4 py-1 rounded
+ font-medium drop-shadow"
               onClick={onIssueListClick}
             >
               Issues({issues.length})
             </motion.span>
-
-            <span className="text-indigo-600 hover:text-indigo-700">|</span>
 
             {currentUser && (
               <>
@@ -250,7 +246,8 @@ const RoomHeader = ({
                   whileHover={{
                     borderBottom: "1px solid #4f46e5",
                   }}
-                  className=" text-indigo-600 cursor-pointer hover:text-indigo-700 font-medium drop-shadow"
+                  className="relative cursor-pointer text-white hover:text-white bg-indigo-700 px-4 py-1 rounded
+     font-medium drop-shadow"
                   onClick={handleUserMenuOpen}
                 >
                   {currentUser.type === UserType.Facilitator.toString() ? (

@@ -15,15 +15,17 @@ const CreateRoom = () => {
 
   const [roomName, setRoomName] = useState("");
   const [userId, setUserId] = useState("");
-  const [selectedActivity, setSelectedActivity] = useState<string>("None");
-  const [selectedEstimationType, setSelectedEstimationType] =
-    useState<string>("None");
+  const [selectedActivity, setSelectedActivity] = useState<string>(
+    ActivityType.ActivityType.ESTIMATION.name,
+  );
+  const [selectedEstimationType, setSelectedEstimationType] = useState<string>(
+    EstimationType.EstimationType.Scrum.name,
+  );
   const [selectedEstimationValues, setSelectedEstimationValues] = useState<
     string[]
   >([]);
   const [customValues, setCustomValues] = useState("");
   const [selectError, setSelectError] = useState("");
-  const [selectActivityError, setSelectActivityError] = useState("");
   const [isCreateInProgress, setIsCreateInProgress] = useState(false);
   const [roomNameError, setRoomNameError] = useState("");
   const [userIdError, setUserIdError] = useState("");
@@ -36,17 +38,6 @@ const CreateRoom = () => {
   const validateForm = () => {
     setRoomNameError(!roomName ? "Room Name is required" : "");
     setUserIdError(!userId ? "User Id is required" : "");
-
-    setSelectActivityError(
-      selectedActivity === "None" ? "Please select an option" : "",
-    );
-
-    if (selectedActivity === "None") {
-      setSelectError(
-        selectedEstimationType === "None" ? "Please select an option" : "",
-      );
-      return false;
-    }
 
     function validateString(input: string): boolean {
       return /^[a-zA-Z0-9,]+$/.test(input);
@@ -72,12 +63,7 @@ const CreateRoom = () => {
     }
 
     // Stop the flow if any error occurs
-    if (
-      roomNameError ||
-      selectError ||
-      selectActivityError ||
-      customValuesError
-    ) {
+    if (roomNameError || selectError || customValuesError) {
       return false;
     }
 
@@ -240,9 +226,6 @@ const CreateRoom = () => {
               fullWidth
               variant="outlined"
             >
-              <material.MenuItem value={"None"} disabled>
-                Select Activity
-              </material.MenuItem>
               {ActivityType._activityTypes.map((activityType) => (
                 <material.MenuItem
                   key={activityType.id}
@@ -286,9 +269,6 @@ const CreateRoom = () => {
                   fullWidth
                   variant="outlined"
                 >
-                  <material.MenuItem value={"None"} disabled>
-                    Select Estimation Type
-                  </material.MenuItem>
                   {EstimationType._estimationTypes.map((estimationType) => (
                     <material.MenuItem
                       key={estimationType.id}

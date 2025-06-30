@@ -153,7 +153,7 @@ const JoinRoom = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.9 }}
             transition={{ type: "tween", stiffness: 100 }}
-            className="text-white bg-indigo-600 hover:bg-indigo-700 mt-6 py-2 px-4 rounded w-full shadow"
+            className="text-white bg-indigo-500 hover:bg-indigo-600 mt-6 py-2 px-4 rounded w-full shadow"
             onClick={() => {
               validateJoinRoom();
               joinRoom();
