@@ -12,10 +12,10 @@ import { CssBaseline } from "@mui/material";
 import Home from "../home-page/Home";
 import PlanningPage from "../../planning-pages/PlanningPage";
 import JoinRoom from "../room-ops/JoinRoom";
-import RoomHistory from "../room-ops/RoomHistory";
+import MaintenanceMode from "../home-page/MaintenanceMode";
 import CreateRoom from "../room-ops/CreateRoom";
 export const ColorModeContext = createContext({
-  setColorMode: () => {},
+  setColorMode: () => { },
 });
 
 function App() {
@@ -53,11 +53,12 @@ function App() {
       <Suspense fallback={<div className="container">Loading...</div>}>
         <Router>
           <Routes>
-            {/**<Route path='/' element={<MaintenanceMode/>} /> */}
-            <Route path="/" element={<Home />} />
-            <Route path="/create-room" element={<CreateRoom />} />
-            <Route path="/join-room" element={<JoinRoom />} />
-            <Route path="/:roomID" element={<PlanningPage />} />
+            <Route path='/' element={<MaintenanceMode />} />
+
+            {/*<Route path="/" element={<Home />} /> */}
+            {/*<Route path="/create-room" element={<CreateRoom />} />*/}
+            {/*<Route path="/join-room" element={<JoinRoom />} />*/}
+            {/*<Route path="/:roomID" element={<PlanningPage />} />*/}
           </Routes>
         </Router>
       </Suspense>

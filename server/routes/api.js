@@ -412,8 +412,9 @@ export default async function (fastify, opts) {
         const roomsCollection = db.collection(collection_name);
 
         const userExists = await roomsCollection.findOne({ id: id, "users.id": user.id });
+
         if (userExists) {
-          reply.status(400).send({ error: "User already exists in the room" });
+          console.error(reply.status(400).send({ error: "User already exists in the room" }));
           return;
         }
 
